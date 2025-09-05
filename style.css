@@ -88,13 +88,12 @@ p {
 }
 
 .botoes-container {
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
+ display: flex;
+  flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+  justify-content: center; /* Centraliza os botões horizontalmente */
+  gap: 20px; /* Espaço entre os botões */
+  margin-top: 20px; /* Espaço acima dos grupos de botões */
+  width: 100%; /* Ocupa a largura total para organizar em colunas */
 }
 
 .botao-voltar {
@@ -190,6 +189,7 @@ footer {
   margin-top: 50px;
 
 }
+
 
 
 
