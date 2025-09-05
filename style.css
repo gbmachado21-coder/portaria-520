@@ -39,7 +39,7 @@ main {
 }
 
 .main-content {
-  background-color: #cccccc;
+  background-color: black;
   max-width: 900px;
   margin: 40px auto;
   padding: 30px;
@@ -190,3 +190,4 @@ footer {
   margin-top: 50px;
 
 }
+
