@@ -6,124 +6,155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Publicações - DISET</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Estilos para o agrupamento */
+    .publications-group {
+      margin-bottom: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #fff;
+    }
+
+    .group-header {
+      background-color: #002d62;
+      color: white;
+      padding: 1rem;
+      font-size: 1.5em;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .group-header:hover {
+        background-color: #004085;
+    }
+
+    .group-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: none; /* Inicia escondido */
+    }
+
+    .group-list li {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .group-list li:last-child {
+      border-bottom: none;
+    }
+
+    .group-list a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .group-list a:hover {
+      text-decoration: underline;
+    }
+    
+    .group-toggle-icon {
+      font-size: 1.5em;
+      transition: transform 0.3s ease;
+    }
+
+    .publications-group.open .group-list {
+      display: block;
+    }
+
+    .publications-group.open .group-toggle-icon {
+      transform: rotate(90deg);
+    }
+    
+    .card {
+        padding: 2rem;
+    }
+  </style>
 </head>
 <body>
   <header>
     <img src="logo gdf.png" alt="Logo GDF">
-    <h1>Publicações - DISET</h1>
+    <h1>Publicações e Legislação</h1>
   </header>
   <main class="main-content">
-    <div class="container">
-      <div class="filter-container">
-        <label for="document-filter">Filtrar por tipo de documento:</label>
-        <select id="document-filter" onchange="applyFilters()">
-          <option value="all">Todos</option>
-          <option value="portarias">Portarias</option>
-          <option value="leis">Leis</option>
-          <option value="resolucoes">Resoluções</option>
-          <option value="outros">Outros Documentos</option>
-        </select>
-        <label for="subject-filter">Filtrar por assunto:</label>
-        <select id="subject-filter" onchange="applyFilters()">
-          <option value="all">Todos</option>
-          <option value="remanejamento">Remanejamento</option>
-          <option value="modulacao">Modulação</option>
-          <option value="provimento">Provimento</option>
-        </select>
+    <div class="card">
+      <div id="publications-container">
+        <!-- Publicações serão carregadas aqui -->
       </div>
-
-      <div class="add-button-container">
-        <a href="gestao.html" class="botao">Incluir Publicação</a>
-      </div>
-
-      <details class="document-section portarias" open>
-        <summary>Portarias</summary>
-        <ul class="answer-content" id="portarias-list"></ul>
-      </details>
-
-      <details class="document-section leis" open>
-        <summary>Leis</summary>
-        <ul class="answer-content" id="leis-list"></ul>
-      </details>
-      
-      <details class="document-section resolucoes" open>
-        <summary>Resoluções</summary>
-        <ul class="answer-content" id="resolucoes-list"></ul>
-      </details>
-
-      <details class="document-section outros" open>
-        <summary>Outros Documentos</summary>
-        <ul class="answer-content" id="outros-list"></ul>
-      </details>
     </div>
   </main>
   <footer>
     <div class="back-button-container">
-        <a href="index.html" class="back-button">Voltar para a página inicial</a>
+      <a href="index.html" class="back-button">Voltar para a página inicial</a>
+      <a href="gestao.html" class="back-button">Gerenciar Publicações</a>
     </div>
     <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', loadPublications);
+    document.addEventListener('DOMContentLoaded', loadAndRenderPublications);
 
-    function loadPublications() {
+    function loadAndRenderPublications() {
+      const container = document.getElementById('publications-container');
+      container.innerHTML = '';
       const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
       
-      const lists = {
-        portarias: document.getElementById('portarias-list'),
-        leis: document.getElementById('leis-list'),
-        resolucoes: document.getElementById('resolucoes-list'),
-        outros: document.getElementById('outros-list')
+      const groupedPublications = publications.reduce((acc, pub) => {
+        if (!acc[pub.type]) {
+          acc[pub.type] = [];
+        }
+        acc[pub.type].push(pub);
+        return acc;
+      }, {});
+
+      if (publications.length === 0) {
+        container.innerHTML = '<p>Nenhuma publicação encontrada.</p>';
+        return;
+      }
+      
+      const typeNames = {
+          'portarias': 'Portarias',
+          'leis': 'Leis',
+          'resolucoes': 'Resoluções',
+          'outros': 'Outros Documentos'
       };
 
-      // Limpa as listas antes de recarregar
-      for (const key in lists) {
-        if (lists[key]) {
-          lists[key].innerHTML = '';
-        }
+      for (const type in groupedPublications) {
+        const group = document.createElement('div');
+        group.className = 'publications-group';
+        
+        const header = document.createElement('div');
+        header.className = 'group-header';
+        header.innerHTML = `
+          <span>${typeNames[type]}</span>
+          <span class="group-toggle-icon">></span>
+        `;
+        
+        const list = document.createElement('ul');
+        list.className = 'group-list';
+        
+        groupedPublications[type].forEach(pub => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#'; // Link temporário
+          link.textContent = `${pub.name} (${pub.subject}) - Arquivo: ${pub.fileName || 'Nenhum'}`;
+          listItem.appendChild(link);
+          list.appendChild(listItem);
+        });
+        
+        group.appendChild(header);
+        group.appendChild(list);
+        container.appendChild(group);
+
+        // Adiciona funcionalidade para expandir/colapsar
+        header.addEventListener('click', () => {
+          group.classList.toggle('open');
+        });
       }
-
-      publications.forEach(pub => {
-        const listItem = document.createElement('li');
-        listItem.classList.add(pub.subject);
-        listItem.innerHTML = `<a href="#">${pub.name}</a>`;
-        
-        if (lists[pub.type]) {
-          lists[pub.type].appendChild(listItem);
-        }
-      });
-      applyFilters();
-    }
-
-    function applyFilters() {
-      const docType = document.getElementById('document-filter').value;
-      const subject = document.getElementById('subject-filter').value;
-
-      const allSections = document.querySelectorAll('.document-section');
-      
-      allSections.forEach(section => {
-        if (docType === 'all' || section.classList.contains(docType)) {
-          section.style.display = 'block';
-        } else {
-          section.style.display = 'none';
-        }
-      });
-
-      const allItems = document.querySelectorAll('li');
-      allItems.forEach(item => {
-        const itemIsVisibleByType = item.closest('.document-section').style.display !== 'none';
-        
-        if (itemIsVisibleByType) {
-          if (subject === 'all' || item.classList.contains(subject)) {
-            item.style.display = 'list-item';
-          } else {
-            item.style.display = 'none';
-          }
-        } else {
-          item.style.display = 'none';
-        }
-      });
     }
   </script>
 </body>
