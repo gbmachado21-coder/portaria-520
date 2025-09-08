@@ -20,7 +20,6 @@
           <option value="all">Todos</option>
           <option value="portarias">Portarias</option>
           <option value="leis">Leis</option>
-           <option value="Memorando Circular">Memorandos</option
           <option value="resolucoes">Resoluções</option>
           <option value="outros">Outros Documentos</option>
         </select>
@@ -33,37 +32,28 @@
         </select>
       </div>
 
+      <div class="add-button-container">
+        <a href="gestao.html" class="botao">Incluir Publicação</a>
+      </div>
+
       <details class="document-section portarias" open>
         <summary>Portarias</summary>
-        <ul class="answer-content" id="portarias-list">
-          <li class="remanejamento"><a href="#">Portaria Nº 520, de 08 de maio de 2025 - Normas para lotação, exercício e remanejamento.</a></li>
-          <li class="modulacao"><a href="#">Portaria Nº 521, de 09 de maio de 2025 - Orientações sobre modulação e carga horária.</a></li>
-          <!-- Adicione mais portarias aqui -->
-        </ul>
+        <ul class="answer-content" id="portarias-list"></ul>
       </details>
 
       <details class="document-section leis" open>
         <summary>Leis</summary>
-        <ul class="answer-content" id="leis-list">
-          <li class="remanejamento"><a href="#">Lei Nº 84, de 16 de setembro de 2024 - Dispõe sobre o Magistério Público do Distrito Federal e remanejamento.</a></li>
-          <!-- Adicione mais leis aqui -->
-        </ul>
+        <ul class="answer-content" id="leis-list"></ul>
       </details>
       
       <details class="document-section resolucoes" open>
         <summary>Resoluções</summary>
-        <ul class="answer-content" id="resolucoes-list">
-          <li class="modulacao"><a href="#">Resolução Nº 10, de 10 de abril de 2025 - Dispõe sobre a carga horária e modulação dos professores.</a></li>
-          <!-- Adicione mais resoluções aqui -->
-        </ul>
+        <ul class="answer-content" id="resolucoes-list"></ul>
       </details>
 
       <details class="document-section outros" open>
         <summary>Outros Documentos</summary>
-        <ul class="answer-content" id="outros-list">
-          <li class="provimento"><a href="#">Edital de Chamada Pública Nº XX/2025 - Vagas para atuação em projetos específicos e provimento.</a></li>
-          <!-- Adicione outros documentos aqui -->
-        </ul>
+        <ul class="answer-content" id="outros-list"></ul>
       </details>
     </div>
   </main>
@@ -75,13 +65,43 @@
   </footer>
 
   <script>
+    document.addEventListener('DOMContentLoaded', loadPublications);
+
+    function loadPublications() {
+      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+      
+      const lists = {
+        portarias: document.getElementById('portarias-list'),
+        leis: document.getElementById('leis-list'),
+        resolucoes: document.getElementById('resolucoes-list'),
+        outros: document.getElementById('outros-list')
+      };
+
+      // Limpa as listas antes de recarregar
+      for (const key in lists) {
+        if (lists[key]) {
+          lists[key].innerHTML = '';
+        }
+      }
+
+      publications.forEach(pub => {
+        const listItem = document.createElement('li');
+        listItem.classList.add(pub.subject);
+        listItem.innerHTML = `<a href="#">${pub.name}</a>`;
+        
+        if (lists[pub.type]) {
+          lists[pub.type].appendChild(listItem);
+        }
+      });
+      applyFilters();
+    }
+
     function applyFilters() {
       const docType = document.getElementById('document-filter').value;
       const subject = document.getElementById('subject-filter').value;
 
       const allSections = document.querySelectorAll('.document-section');
-      const allItems = document.querySelectorAll('li');
-
+      
       allSections.forEach(section => {
         if (docType === 'all' || section.classList.contains(docType)) {
           section.style.display = 'block';
@@ -90,6 +110,7 @@
         }
       });
 
+      const allItems = document.querySelectorAll('li');
       allItems.forEach(item => {
         const itemIsVisibleByType = item.closest('.document-section').style.display !== 'none';
         
@@ -107,5 +128,3 @@
   </script>
 </body>
 </html>
-
-
