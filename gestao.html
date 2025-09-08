@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão de Publicações - DISET</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <img src="logo gdf.png" alt="Logo GDF">
+    <h1>Gestão de Publicações</h1>
+  </header>
+  <main class="main-content">
+    <div class="container">
+      <div class="gestao-form-container">
+        <h2>Cadastrar Nova Publicação</h2>
+        <form id="publication-form">
+          <div class="form-group">
+            <label for="pub-name">Nome da Publicação:</label>
+            <input type="text" id="pub-name" required>
+          </div>
+          <div class="form-group">
+            <label for="pub-type">Tipo de Documento:</label>
+            <select id="pub-type" required>
+              <option value="portarias">Portaria</option>
+              <option value="leis">Lei</option>
+              <option value="resolucoes">Resolução</option>
+              <option value="outros">Outro Documento</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="pub-subject">Assunto:</label>
+            <select id="pub-subject" required>
+              <option value="remanejamento">Remanejamento</option>
+              <option value="modulacao">Modulação</option>
+              <option value="provimento">Provimento</option>
+            </select>
+          </div>
+          <button type="submit" class="botao">Salvar Publicação</button>
+        </form>
+        <div id="message-box" class="message-box" style="display: none;"></div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="back-button-container">
+      <a href="index.html" class="back-button">Voltar para a página inicial</a>
+      <a href="publica.html" class="back-button">Ver Publicações</a>
+    </div>
+    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
+  </footer>
+
+  <script>
+    document.getElementById('publication-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('pub-name').value;
+      const type = document.getElementById('pub-type').value;
+      const subject = document.getElementById('pub-subject').value;
+      
+      const newPublication = {
+        name: name,
+        type: type,
+        subject: subject
+      };
+
+      try {
+        let publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+        publications.push(newPublication);
+        localStorage.setItem('publicacoes', JSON.stringify(publications));
+        
+        const messageBox = document.getElementById('message-box');
+        messageBox.textContent = 'Publicação salva com sucesso!';
+        messageBox.style.display = 'block';
+        messageBox.style.backgroundColor = '#d4edda';
+        messageBox.style.color = '#155724';
+        
+        document.getElementById('publication-form').reset();
+
+      } catch (e) {
+        const messageBox = document.getElementById('message-box');
+        messageBox.textContent = 'Erro ao salvar a publicação. Tente novamente.';
+        messageBox.style.display = 'block';
+        messageBox.style.backgroundColor = '#f8d7da';
+        messageBox.style.color = '#721c24';
+        console.error('Erro ao salvar no localStorage:', e);
+      }
+    });
+  </script>
+</body>
+</html>
