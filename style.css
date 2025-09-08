@@ -204,8 +204,12 @@ footer {
 
 /* Estilos da página de publicações */
 .filter-container {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 .filter-container label {
   font-size: 1.1rem;
