@@ -96,7 +96,21 @@
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', loadAndRenderPublications);
+    document.addEventListener('DOMContentLoaded', () => {
+      // Preenche o localStorage com dados de exemplo se ele estiver vazio
+      if (!localStorage.getItem('publicacoes')) {
+        const examplePublications = [
+          { name: 'Portaria 123', type: 'portarias', subject: 'remanejamento', fileName: 'portaria_123.pdf' },
+          { name: 'Portaria 456', type: 'portarias', subject: 'modulacao', fileName: 'portaria_456.pdf' },
+          { name: 'Lei 789', type: 'leis', subject: 'provimento', fileName: 'lei_789.pdf' },
+          { name: 'Resolução XYZ', type: 'resolucoes', subject: 'outros', fileName: 'resolucao_xyz.pdf' },
+          { name: 'Outro documento', type: 'outros', subject: 'outros', fileName: 'doc_outro.pdf' }
+        ];
+        localStorage.setItem('publicacoes', JSON.stringify(examplePublications));
+      }
+      
+      loadAndRenderPublications();
+    });
 
     function loadAndRenderPublications() {
       const container = document.getElementById('publications-container');
