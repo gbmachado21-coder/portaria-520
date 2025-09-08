@@ -42,6 +42,13 @@
         </form>
         <div id="message-box" class="message-box" style="display: none;"></div>
       </div>
+      
+      <div class="publications-list-container">
+        <h2>Publicações Cadastradas</h2>
+        <ul id="publications-list">
+          <!-- Publicações serão carregadas aqui -->
+        </ul>
+      </div>
     </div>
   </main>
   <footer>
@@ -53,6 +60,7 @@
   </footer>
 
   <script>
+    document.addEventListener('DOMContentLoaded', loadAndRenderPublications);
     document.getElementById('publication-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
@@ -78,7 +86,7 @@
         messageBox.style.color = '#155724';
         
         document.getElementById('publication-form').reset();
-
+        loadAndRenderPublications(); // Recarrega a lista
       } catch (e) {
         const messageBox = document.getElementById('message-box');
         messageBox.textContent = 'Erro ao salvar a publicação. Tente novamente.';
@@ -88,6 +96,38 @@
         console.error('Erro ao salvar no localStorage:', e);
       }
     });
+
+    function loadAndRenderPublications() {
+      const publicationsList = document.getElementById('publications-list');
+      publicationsList.innerHTML = '';
+      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+
+      publications.forEach((pub, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          ${pub.name} (${pub.type}, ${pub.subject})
+          <button class="delete-button" data-index="${index}">Excluir</button>
+        `;
+        publicationsList.appendChild(listItem);
+      });
+
+      // Adiciona o event listener aos botões de excluir
+      document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function() {
+          const index = this.getAttribute('data-index');
+          deletePublication(index);
+        });
+      });
+    }
+
+    function deletePublication(index) {
+      let publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+      if (index > -1) {
+        publications.splice(index, 1);
+        localStorage.setItem('publicacoes', JSON.stringify(publications));
+        loadAndRenderPublications(); // Recarrega a lista
+      }
+    }
   </script>
 </body>
 </html>
