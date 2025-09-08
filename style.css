@@ -277,7 +277,7 @@ footer {
 }
 .back-button-container {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 0rem;
 }
 .back-button {
   background-color: #6c757d;
@@ -290,3 +290,4 @@ footer {
 .back-button:hover {
   background-color: #5a6268;
 }
+
