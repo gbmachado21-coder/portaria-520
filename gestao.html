@@ -16,7 +16,7 @@
     <div class="card">
       <h2 id="form-title">Cadastrar Nova Publicação</h2>
       <form id="publication-form">
-        <input type="hidden" id="pub-index" value="-1">
+        <input type="hidden" id="pub-doc-id" value="">
         <div class="form-group">
           <label for="pub-name">Nome da Publicação:</label>
           <input type="text" id="pub-name" required>
@@ -36,157 +36,209 @@
             <option value="remanejamento">Remanejamento</option>
             <option value="modulacao">Modulação</option>
             <option value="provimento">Provimento</option>
+            <option value="outros">Outros</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="pub-file">Anexar Arquivo:</label>
-          <input type="file" id="pub-file">
+          <label for="pub-file">Anexar Arquivo (em breve):</label>
+          <input type="file" id="pub-file" disabled>
+          <p class="file-info">O upload de arquivos será implementado em breve com o Firebase Storage.</p>
         </div>
-        <div class="botoes-container">
-          <button type="submit" id="save-button" class="botao">Salvar Publicação</button>
-          <button type="button" id="cancel-button" class="botao-cancelar" style="display: none;">Cancelar Edição</button>
+        <div class="form-group">
+          <button type="submit" id="save-button">Salvar Publicação</button>
+          <button type="button" id="cancel-button" style="display:none;">Cancelar</button>
         </div>
       </form>
-      <div id="message-box" class="message-box" style="display: none;"></div>
-    </div>
-    
-    <div class="card publications-list-container">
+
+      <div class="message-box" id="message-box" style="display:none;"></div>
+
       <h2>Publicações Cadastradas</h2>
-      <ul id="publications-list">
-        <!-- Publicações serão carregadas aqui -->
+      <ul id="publications-list" class="gestao-list">
+        <!-- Publicações serão carregadas aqui pelo Firestore -->
       </ul>
+
+      <div class="loading-indicator" id="loading-indicator" style="display:block;">
+        Carregando publicações...
+      </div>
     </div>
   </main>
   <footer>
-    <div class="back-button-container">
-      <a href="index.html" class="back-button">Voltar para a página inicial</a>
-      <a href="publica.html" class="back-button">Ver Publicações</a>
-    </div>
+    <a href="index.html" class="botao-voltar">Voltar</a>
     <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', loadAndRenderPublications);
-    
-    document.getElementById('publication-form').addEventListener('submit', function(event) {
-      event.preventDefault();
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+    // Global variables for Firebase configuration
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
+
+    let db;
+    let auth;
+    let userId;
+
+    async function initFirebase() {
+      try {
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+        await signInWithCustomToken(auth, initialAuthToken);
+        userId = auth.currentUser?.uid;
+        document.getElementById('loading-indicator').style.display = 'none';
+        console.log("Firebase e Firestore inicializados com sucesso.");
+        console.log(`Usuário logado com ID: ${userId}`);
+        loadAndRenderPublications();
+      } catch (error) {
+        console.error("Erro ao inicializar Firebase:", error);
+        showMessage("Erro ao conectar com o banco de dados. Tente novamente.", "error");
+        document.getElementById('loading-indicator').textContent = "Erro ao carregar.";
+      }
+    }
+    
+    // Call the initialization function
+    initFirebase();
+
+    const publicationsForm = document.getElementById('publication-form');
+    const publicationsList = document.getElementById('publications-list');
+    const saveButton = document.getElementById('save-button');
+    const cancelButton = document.getElementById('cancel-button');
+    const formTitle = document.getElementById('form-title');
+    const pubDocIdInput = document.getElementById('pub-doc-id');
+
+    async function addOrUpdatePublication(e) {
+      e.preventDefault();
+      saveButton.disabled = true;
+      
       const name = document.getElementById('pub-name').value;
       const type = document.getElementById('pub-type').value;
       const subject = document.getElementById('pub-subject').value;
-      const fileInput = document.getElementById('pub-file');
-      const file = fileInput.files[0];
-      const index = document.getElementById('pub-index').value;
-      
-      const newPublication = {
-        name: name,
-        type: type,
-        subject: subject,
-        fileName: file ? file.name : ''
-      };
+      const docId = pubDocIdInput.value;
 
       try {
-        let publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+        const data = {
+          name,
+          type,
+          subject,
+          createdAt: new Date()
+        };
         
-        if (index === "-1") {
-          publications.push(newPublication);
-          showMessage('Publicação salva com sucesso!', 'success');
+        const publicationsRef = collection(db, `artifacts/${appId}/public/data/publications`);
+
+        if (docId) {
+          // Update existing document
+          const docRef = doc(publicationsRef, docId);
+          await setDoc(docRef, data);
+          showMessage("Publicação atualizada com sucesso!", "success");
         } else {
-          publications[index] = newPublication;
-          showMessage('Publicação atualizada com sucesso!', 'success');
-          resetForm();
+          // Add new document
+          await addDoc(publicationsRef, data);
+          showMessage("Publicação adicionada com sucesso!", "success");
         }
-
-        localStorage.setItem('publicacoes', JSON.stringify(publications));
         
-        document.getElementById('publication-form').reset();
-        loadAndRenderPublications();
-      } catch (e) {
-        showMessage('Erro ao salvar/atualizar a publicação. Tente novamente.', 'error');
-        console.error('Erro ao salvar no localStorage:', e);
-      }
-    });
+        publicationsForm.reset();
+        pubDocIdInput.value = "";
+        saveButton.textContent = "Salvar Publicação";
+        formTitle.textContent = "Cadastrar Nova Publicação";
+        cancelButton.style.display = 'none';
 
-    document.getElementById('cancel-button').addEventListener('click', resetForm);
-
-    function showMessage(text, type) {
-      const messageBox = document.getElementById('message-box');
-      messageBox.textContent = text;
-      messageBox.style.display = 'block';
-      if (type === 'success') {
-        messageBox.style.backgroundColor = '#d4edda';
-        messageBox.style.color = '#155724';
-      } else {
-        messageBox.style.backgroundColor = '#f8d7da';
-        messageBox.style.color = '#721c24';
+      } catch (error) {
+        console.error("Erro ao salvar a publicação:", error);
+        showMessage("Erro ao salvar a publicação. Tente novamente.", "error");
+      } finally {
+        saveButton.disabled = false;
       }
     }
 
-    function resetForm() {
-      document.getElementById('publication-form').reset();
-      document.getElementById('pub-index').value = "-1";
-      document.getElementById('save-button').textContent = "Salvar Publicação";
-      document.getElementById('form-title').textContent = "Cadastrar Nova Publicação";
-      document.getElementById('cancel-button').style.display = 'none';
+    async function deletePublication(docId) {
+      const confirmDelete = window.confirm("Tem certeza que deseja excluir esta publicação?");
+      if (!confirmDelete) return;
+
+      try {
+        const docRef = doc(db, `artifacts/${appId}/public/data/publications/${docId}`);
+        await deleteDoc(docRef);
+        showMessage("Publicação excluída com sucesso!", "success");
+      } catch (error) {
+        console.error("Erro ao excluir a publicação:", error);
+        showMessage("Erro ao excluir a publicação. Tente novamente.", "error");
+      }
+    }
+
+    function editPublication(docId, data) {
+      document.getElementById('pub-name').value = data.name;
+      document.getElementById('pub-type').value = data.type;
+      document.getElementById('pub-subject').value = data.subject;
+      pubDocIdInput.value = docId;
+      saveButton.textContent = "Atualizar Publicação";
+      formTitle.textContent = "Editar Publicação";
+      cancelButton.style.display = 'inline-block';
     }
 
     function loadAndRenderPublications() {
-      const publicationsList = document.getElementById('publications-list');
-      publicationsList.innerHTML = '';
-      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+      const publicationsRef = collection(db, `artifacts/${appId}/public/data/publications`);
+      onSnapshot(publicationsRef, (querySnapshot) => {
+        publicationsList.innerHTML = '';
+        if (querySnapshot.empty) {
+          publicationsList.innerHTML = '<p class="no-publications">Nenhuma publicação encontrada.</p>';
+          return;
+        }
 
-      publications.forEach((pub, index) => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-          <span>${pub.name} (${pub.type}, ${pub.subject}) - Arquivo: ${pub.fileName || 'Nenhum'}</span>
-          <div class="actions">
-            <button class="edit-button" data-index="${index}">Editar</button>
-            <button class="delete-button" data-index="${index}">Excluir</button>
-          </div>
-        `;
-        publicationsList.appendChild(listItem);
-      });
+        querySnapshot.forEach((doc) => {
+          const pub = doc.data();
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `
+            <div>
+              <strong>Nome:</strong> ${pub.name}<br>
+              <strong>Tipo:</strong> ${pub.type}<br>
+              <strong>Assunto:</strong> ${pub.subject}
+            </div>
+            <div class="actions">
+              <button class="edit-button" data-doc-id="${doc.id}">Editar</button>
+              <button class="delete-button" data-doc-id="${doc.id}">Excluir</button>
+            </div>
+          `;
+          publicationsList.appendChild(listItem);
+        });
 
-      // Adiciona o event listener aos botões de excluir
-      document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', function() {
-          const index = this.getAttribute('data-index');
-          deletePublication(index);
+        document.querySelectorAll('.edit-button').forEach(button => {
+          button.addEventListener('click', () => {
+            const docId = button.getAttribute('data-doc-id');
+            const docData = querySnapshot.docs.find(d => d.id === docId).data();
+            editPublication(docId, docData);
+          });
+        });
+
+        document.querySelectorAll('.delete-button').forEach(button => {
+          button.addEventListener('click', () => {
+            const docId = button.getAttribute('data-doc-id');
+            deletePublication(docId);
+          });
         });
       });
-
-      // Adiciona o event listener aos botões de editar
-      document.querySelectorAll('.edit-button').forEach(button => {
-        button.addEventListener('click', function() {
-          const index = this.getAttribute('data-index');
-          editPublication(index);
-        });
-      });
     }
 
-    function deletePublication(index) {
-      let publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-      if (index > -1) {
-        publications.splice(index, 1);
-        localStorage.setItem('publicacoes', JSON.stringify(publications));
-        loadAndRenderPublications();
-        showMessage('Publicação excluída com sucesso!', 'success');
-      }
+    function showMessage(message, type) {
+      const messageBox = document.getElementById('message-box');
+      messageBox.textContent = message;
+      messageBox.className = `message-box ${type}`;
+      messageBox.style.display = 'block';
+      setTimeout(() => {
+        messageBox.style.display = 'none';
+      }, 5000);
     }
-
-    function editPublication(index) {
-      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-      const pub = publications[index];
-      
-      document.getElementById('pub-name').value = pub.name;
-      document.getElementById('pub-type').value = pub.type;
-      document.getElementById('pub-subject').value = pub.subject;
-      document.getElementById('pub-index').value = index;
-
-      document.getElementById('save-button').textContent = "Atualizar Publicação";
-      document.getElementById('form-title').textContent = "Editar Publicação";
-      document.getElementById('cancel-button').style.display = 'inline-block';
-    }
+    
+    publicationsForm.addEventListener('submit', addOrUpdatePublication);
+    cancelButton.addEventListener('click', () => {
+      publicationsForm.reset();
+      pubDocIdInput.value = "";
+      saveButton.textContent = "Salvar Publicação";
+      formTitle.textContent = "Cadastrar Nova Publicação";
+      cancelButton.style.display = 'none';
+    });
   </script>
 </body>
 </html>
