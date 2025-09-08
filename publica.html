@@ -4,30 +4,127 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel de Informações - DISET</title>
+  <title>Publicações - DISET</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <img src="logo gdf.png" alt="Logo GDF">
-    <h1>Painel de Informações - DISET</h1>
+    <h1>Publicações - DISET</h1>
   </header>
   <main class="main-content">
-    <div class="card">
-      <p class="intro-text">
-        A Diretoria de Gestão dos Servidores Efetivos e Temporários –DISET (DISET/SUGEP) disponibiliza um painel interativo com dados atualizados sobre os profissionais da Secretaria de Estado de Educação do Distrito Federal. Este painel visa ampliar a transparência, apoiar a tomada de decisões e subsidiar a formulação de políticas públicas voltadas à gestão de pessoas.
-      </p>
-
-      <div class="botoes-container">
-        <a class="botao" href="https://app.powerbi.com/groups/me/reports/56868245-399d-4eb9-b22c-dca88b57350e/bda24e41ee06da84c014?experience=power-bi" target="_blank">Acessar Painel Power BI</a>
-        <a class="botao" href="remane.html">Remanejamento</a>
-        <a class="botao" href="publica.html">Publicações</a>
-        <a class="botao" href="contatos.html">Conheça a DISET</a>
+    <div class="container">
+      <div class="filter-container">
+        <label for="document-filter">Filtrar por tipo de documento:</label>
+        <select id="document-filter" onchange="applyFilters()">
+          <option value="all">Todos</option>
+          <option value="portarias">Portarias</option>
+          <option value="leis">Leis</option>
+          <option value="resolucoes">Resoluções</option>
+          <option value="outros">Outros Documentos</option>
+        </select>
+        <label for="subject-filter">Filtrar por assunto:</label>
+        <select id="subject-filter" onchange="applyFilters()">
+          <option value="all">Todos</option>
+          <option value="remanejamento">Remanejamento</option>
+          <option value="modulacao">Modulação</option>
+          <option value="provimento">Provimento</option>
+        </select>
       </div>
+
+      <div class="add-button-container">
+        <a href="gestao.html" class="botao">Incluir Publicação</a>
+      </div>
+
+      <details class="document-section portarias" open>
+        <summary>Portarias</summary>
+        <ul class="answer-content" id="portarias-list"></ul>
+      </details>
+
+      <details class="document-section leis" open>
+        <summary>Leis</summary>
+        <ul class="answer-content" id="leis-list"></ul>
+      </details>
+      
+      <details class="document-section resolucoes" open>
+        <summary>Resoluções</summary>
+        <ul class="answer-content" id="resolucoes-list"></ul>
+      </details>
+
+      <details class="document-section outros" open>
+        <summary>Outros Documentos</summary>
+        <ul class="answer-content" id="outros-list"></ul>
+      </details>
     </div>
   </main>
   <footer>
+    <div class="back-button-container">
+        <a href="index.html" class="back-button">Voltar para a página inicial</a>
+    </div>
     <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadPublications);
+
+    function loadPublications() {
+      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+      
+      const lists = {
+        portarias: document.getElementById('portarias-list'),
+        leis: document.getElementById('leis-list'),
+        resolucoes: document.getElementById('resolucoes-list'),
+        outros: document.getElementById('outros-list')
+      };
+
+      // Limpa as listas antes de recarregar
+      for (const key in lists) {
+        if (lists[key]) {
+          lists[key].innerHTML = '';
+        }
+      }
+
+      publications.forEach(pub => {
+        const listItem = document.createElement('li');
+        listItem.classList.add(pub.subject);
+        listItem.innerHTML = `<a href="#">${pub.name}</a>`;
+        
+        if (lists[pub.type]) {
+          lists[pub.type].appendChild(listItem);
+        }
+      });
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const docType = document.getElementById('document-filter').value;
+      const subject = document.getElementById('subject-filter').value;
+
+      const allSections = document.querySelectorAll('.document-section');
+      
+      allSections.forEach(section => {
+        if (docType === 'all' || section.classList.contains(docType)) {
+          section.style.display = 'block';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+
+      const allItems = document.querySelectorAll('li');
+      allItems.forEach(item => {
+        const itemIsVisibleByType = item.closest('.document-section').style.display !== 'none';
+        
+        if (itemIsVisibleByType) {
+          if (subject === 'all' || item.classList.contains(subject)) {
+            item.style.display = 'list-item';
+          } else {
+            item.style.display = 'none';
+          }
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>
