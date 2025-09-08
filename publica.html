@@ -4,141 +4,30 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Publicações - DISET</title>
+  <title>Painel de Informações - DISET</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <img src="logo gdf.png" alt="Logo GDF">
-    <h1>Publicações e Legislação</h1>
+    <h1>Painel de Informações - DISET</h1>
   </header>
   <main class="main-content">
     <div class="card">
-      <div class="tabs-container">
-        <button class="tab-button active" data-tab="todos">Todos</button>
-        <button class="tab-button" data-tab="portarias">Portarias</button>
-        <button class="tab-button" data-tab="leis">Leis</button>
-        <button class="tab-button" data-tab="resolucoes">Resoluções</button>
-        <button class="tab-button" data-tab="outros">Outros Documentos</button>
-      </div>
+      <p class="intro-text">
+        A Diretoria de Gestão dos Servidores Efetivos e Temporários –DISET (DISET/SUGEP) disponibiliza um painel interativo com dados atualizados sobre os profissionais da Secretaria de Estado de Educação do Distrito Federal. Este painel visa ampliar a transparência, apoiar a tomada de decisões e subsidiar a formulação de políticas públicas voltadas à gestão de pessoas.
+      </p>
 
-      <div id="publications-container">
-        <!-- Publicações serão carregadas aqui -->
+      <div class="botoes-container">
+        <a class="botao" href="https://app.powerbi.com/groups/me/reports/56868245-399d-4eb9-b22c-dca88b57350e/bda24e41ee06da84c014?experience=power-bi" target="_blank">Acessar Painel Power BI</a>
+        <a class="botao" href="remane.html">Remanejamento</a>
+        <a class="botao" href="publica.html">Publicações</a>
+        <a class="botao" href="contatos.html">Conheça a DISET</a>
       </div>
     </div>
   </main>
   <footer>
-    <div class="back-button-container">
-      <a href="index.html" class="back-button">Voltar para a página inicial</a>
-      <a href="gestao.html" class="back-button">Gerenciar Publicações</a>
-    </div>
     <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Preenche o localStorage com dados de exemplo se ele estiver vazio
-      if (!localStorage.getItem('publicacoes')) {
-        const examplePublications = [
-          { name: 'Portaria 520, de 08 de maio de 2025 - Normas para lotação, exercício e remanejamento.', type: 'portarias', subject: 'remanejamento', fileName: 'portaria_520.pdf' },
-          { name: 'Portaria 521, de 09 de maio de 2025 - Orientações sobre modulação e carga horária.', type: 'portarias', subject: 'modulacao', fileName: 'portaria_521.pdf' },
-          { name: 'Lei Nº 84, de 16 de setembro de 2024 - Dispõe sobre o Magistério Público do Distrito Federal e remanejamento.', type: 'leis', subject: 'provimento', fileName: 'lei_84.pdf' },
-          { name: 'Resolução XYZ', type: 'resolucoes', subject: 'outros', fileName: 'resolucao_xyz.pdf' },
-          { name: 'Outro documento', type: 'outros', subject: 'outros', fileName: 'doc_outro.pdf' }
-        ];
-        localStorage.setItem('publicacoes', JSON.stringify(examplePublications));
-      }
-      
-      const tabButtons = document.querySelectorAll('.tab-button');
-      tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          document.querySelector('.tab-button.active').classList.remove('active');
-          button.classList.add('active');
-          loadAndRenderPublications();
-        });
-      });
-      
-      loadAndRenderPublications();
-    });
-
-    function loadAndRenderPublications() {
-      const activeTab = document.querySelector('.tab-button.active').dataset.tab;
-      
-      const container = document.getElementById('publications-container');
-      container.innerHTML = '';
-      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-      
-      let filteredPublications = publications;
-      if (activeTab !== 'todos') {
-        filteredPublications = filteredPublications.filter(pub => pub.type === activeTab);
-      }
-
-      if (filteredPublications.length === 0) {
-        container.innerHTML = '<p class="no-publications">Nenhuma publicação encontrada nesta categoria.</p>';
-        return;
-      }
-      
-      const typeNames = {
-          'portarias': 'Portarias',
-          'leis': 'Leis',
-          'resolucoes': 'Resoluções',
-          'outros': 'Outros Documentos',
-          'todos': 'Todas as Publicações'
-      };
-      
-      // Cria um único grupo para a aba "Todos" e múltiplos para as outras abas
-      if (activeTab === 'todos') {
-        const groupedPublications = filteredPublications.reduce((acc, pub) => {
-          if (!acc[pub.type]) {
-            acc[pub.type] = [];
-          }
-          acc[pub.type].push(pub);
-          return acc;
-        }, {});
-        
-        for (const type in groupedPublications) {
-          createPublicationGroup(type, groupedPublications[type], typeNames);
-        }
-      } else {
-        createPublicationGroup(activeTab, filteredPublications, typeNames);
-      }
-    }
-    
-    function createPublicationGroup(type, publications, typeNames) {
-      const container = document.getElementById('publications-container');
-      const group = document.createElement('div');
-      group.className = 'publications-group';
-      
-      const header = document.createElement('div');
-      header.className = 'group-header';
-      header.innerHTML = `
-        <span>${typeNames[type] || type}</span>
-        <span class="group-toggle-icon">−</span>
-      `;
-      
-      const list = document.createElement('ul');
-      list.className = 'group-list';
-      
-      publications.forEach(pub => {
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = '#'; // Link temporário
-        link.textContent = pub.name;
-        listItem.appendChild(link);
-        list.appendChild(listItem);
-      });
-      
-      group.appendChild(header);
-      group.appendChild(list);
-      container.appendChild(group);
-
-      // Adiciona funcionalidade para expandir/colapsar
-      header.addEventListener('click', () => {
-        const isCollapsed = group.classList.toggle('collapsed');
-        const icon = header.querySelector('.group-toggle-icon');
-        icon.textContent = isCollapsed ? '+' : '−';
-      });
-    }
-  </script>
 </body>
 </html>
