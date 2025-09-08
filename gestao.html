@@ -15,8 +15,9 @@
   <main class="main-content">
     <div class="container">
       <div class="gestao-form-container">
-        <h2>Cadastrar Nova Publicação</h2>
+        <h2 id="form-title">Cadastrar Nova Publicação</h2>
         <form id="publication-form">
+          <input type="hidden" id="pub-index" value="-1">
           <div class="form-group">
             <label for="pub-name">Nome da Publicação:</label>
             <input type="text" id="pub-name" required>
@@ -38,7 +39,8 @@
               <option value="provimento">Provimento</option>
             </select>
           </div>
-          <button type="submit" class="botao">Salvar Publicação</button>
+          <button type="submit" id="save-button" class="botao">Salvar Publicação</button>
+          <button type="button" id="cancel-button" class="botao-cancelar" style="display: none;">Cancelar Edição</button>
         </form>
         <div id="message-box" class="message-box" style="display: none;"></div>
       </div>
@@ -61,12 +63,14 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', loadAndRenderPublications);
+    
     document.getElementById('publication-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
       const name = document.getElementById('pub-name').value;
       const type = document.getElementById('pub-type').value;
       const subject = document.getElementById('pub-subject').value;
+      const index = document.getElementById('pub-index').value;
       
       const newPublication = {
         name: name,
@@ -76,26 +80,48 @@
 
       try {
         let publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-        publications.push(newPublication);
+        
+        if (index === "-1") {
+          publications.push(newPublication);
+          showMessage('Publicação salva com sucesso!', 'success');
+        } else {
+          publications[index] = newPublication;
+          showMessage('Publicação atualizada com sucesso!', 'success');
+          resetForm();
+        }
+
         localStorage.setItem('publicacoes', JSON.stringify(publications));
         
-        const messageBox = document.getElementById('message-box');
-        messageBox.textContent = 'Publicação salva com sucesso!';
-        messageBox.style.display = 'block';
-        messageBox.style.backgroundColor = '#d4edda';
-        messageBox.style.color = '#155724';
-        
         document.getElementById('publication-form').reset();
-        loadAndRenderPublications(); // Recarrega a lista
+        loadAndRenderPublications();
       } catch (e) {
-        const messageBox = document.getElementById('message-box');
-        messageBox.textContent = 'Erro ao salvar a publicação. Tente novamente.';
-        messageBox.style.display = 'block';
-        messageBox.style.backgroundColor = '#f8d7da';
-        messageBox.style.color = '#721c24';
+        showMessage('Erro ao salvar/atualizar a publicação. Tente novamente.', 'error');
         console.error('Erro ao salvar no localStorage:', e);
       }
     });
+
+    document.getElementById('cancel-button').addEventListener('click', resetForm);
+
+    function showMessage(text, type) {
+      const messageBox = document.getElementById('message-box');
+      messageBox.textContent = text;
+      messageBox.style.display = 'block';
+      if (type === 'success') {
+        messageBox.style.backgroundColor = '#d4edda';
+        messageBox.style.color = '#155724';
+      } else {
+        messageBox.style.backgroundColor = '#f8d7da';
+        messageBox.style.color = '#721c24';
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('publication-form').reset();
+      document.getElementById('pub-index').value = "-1";
+      document.getElementById('save-button').textContent = "Salvar Publicação";
+      document.getElementById('form-title').textContent = "Cadastrar Nova Publicação";
+      document.getElementById('cancel-button').style.display = 'none';
+    }
 
     function loadAndRenderPublications() {
       const publicationsList = document.getElementById('publications-list');
@@ -105,8 +131,11 @@
       publications.forEach((pub, index) => {
         const listItem = document.createElement('li');
         listItem.innerHTML = `
-          ${pub.name} (${pub.type}, ${pub.subject})
-          <button class="delete-button" data-index="${index}">Excluir</button>
+          <span>${pub.name} (${pub.type}, ${pub.subject})</span>
+          <div class="actions">
+            <button class="edit-button" data-index="${index}">Editar</button>
+            <button class="delete-button" data-index="${index}">Excluir</button>
+          </div>
         `;
         publicationsList.appendChild(listItem);
       });
@@ -118,6 +147,14 @@
           deletePublication(index);
         });
       });
+
+      // Adiciona o event listener aos botões de editar
+      document.querySelectorAll('.edit-button').forEach(button => {
+        button.addEventListener('click', function() {
+          const index = this.getAttribute('data-index');
+          editPublication(index);
+        });
+      });
     }
 
     function deletePublication(index) {
@@ -125,8 +162,23 @@
       if (index > -1) {
         publications.splice(index, 1);
         localStorage.setItem('publicacoes', JSON.stringify(publications));
-        loadAndRenderPublications(); // Recarrega a lista
+        loadAndRenderPublications();
+        showMessage('Publicação excluída com sucesso!', 'success');
       }
+    }
+
+    function editPublication(index) {
+      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+      const pub = publications[index];
+      
+      document.getElementById('pub-name').value = pub.name;
+      document.getElementById('pub-type').value = pub.type;
+      document.getElementById('pub-subject').value = pub.subject;
+      document.getElementById('pub-index').value = index;
+
+      document.getElementById('save-button').textContent = "Atualizar Publicação";
+      document.getElementById('form-title').textContent = "Editar Publicação";
+      document.getElementById('cancel-button').style.display = 'inline-block';
     }
   </script>
 </body>
