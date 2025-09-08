@@ -27,49 +27,56 @@
         <select id="subject-filter" onchange="applyFilters()">
           <option value="all">Todos</option>
           <option value="remanejamento">Remanejamento</option>
-          <option value="modulacao">Modulação</option>
-          <option value="provimento">Provimento</option>
+          <option value="ferias">Férias</option>
+          <option value="abono-permanencia">Abono Permanência</option>
+          <option value="outros-assuntos">Outros</option>
         </select>
       </div>
 
-      <div class="add-button-container">
-        <a href="gestao.html" class="botao">Incluir Publicação</a>
+      <div class="sub-nav">
+        <a class="sub-botao" href="index.html">⬅ Voltar para a Página Inicial</a>
+        <a class="sub-botao" href="gestao.html">Gerenciar Publicações</a>
       </div>
 
-      <details class="document-section portarias" open>
-        <summary>Portarias</summary>
-        <ul class="answer-content" id="portarias-list"></ul>
-      </details>
+      <div class="document-section portarias">
+        <h2>Portarias</h2>
+        <ul id="portarias-list">
+          <li>Nenhuma publicação encontrada.</li>
+        </ul>
+      </div>
 
-      <details class="document-section leis" open>
-        <summary>Leis</summary>
-        <ul class="answer-content" id="leis-list"></ul>
-      </details>
+      <div class="document-section leis">
+        <h2>Leis</h2>
+        <ul id="leis-list">
+          <li>Nenhuma publicação encontrada.</li>
+        </ul>
+      </div>
+
+      <div class="document-section resolucoes">
+        <h2>Resoluções</h2>
+        <ul id="resolucoes-list">
+          <li>Nenhuma publicação encontrada.</li>
+        </ul>
+      </div>
       
-      <details class="document-section resolucoes" open>
-        <summary>Resoluções</summary>
-        <ul class="answer-content" id="resolucoes-list"></ul>
-      </details>
+      <div class="document-section outros">
+        <h2>Outros Documentos</h2>
+        <ul id="outros-list">
+          <li>Nenhuma publicação encontrada.</li>
+        </ul>
+      </div>
 
-      <details class="document-section outros" open>
-        <summary>Outros Documentos</summary>
-        <ul class="answer-content" id="outros-list"></ul>
-      </details>
     </div>
   </main>
+
   <footer>
-    <div class="back-button-container">
-        <a href="index.html" class="back-button">Voltar para a página inicial</a>
-    </div>
-    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
+    <p>Projeto de Apoio e Gestão - DISET © 2025</p>
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', loadPublications);
-
-    function loadPublications() {
+    // Função para carregar publicações do localStorage e renderizar na página
+    function loadAndRenderPublications() {
       const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-      
       const lists = {
         portarias: document.getElementById('portarias-list'),
         leis: document.getElementById('leis-list'),
@@ -77,25 +84,36 @@
         outros: document.getElementById('outros-list')
       };
 
-      // Limpa as listas antes de recarregar
-      for (const key in lists) {
+      // Limpa as listas antes de renderizar
+      for (let key in lists) {
         if (lists[key]) {
           lists[key].innerHTML = '';
         }
       }
-
-      publications.forEach(pub => {
-        const listItem = document.createElement('li');
-        listItem.classList.add(pub.subject);
-        listItem.innerHTML = `<a href="#">${pub.name}</a>`;
-        
-        if (lists[pub.type]) {
-          lists[pub.type].appendChild(listItem);
+      
+      if (publications.length === 0) {
+        for (let key in lists) {
+          if (lists[key]) {
+            const noPubsItem = document.createElement('li');
+            noPubsItem.textContent = 'Nenhuma publicação encontrada.';
+            lists[key].appendChild(noPubsItem);
+          }
         }
-      });
+      } else {
+        publications.forEach(pub => {
+          const listItem = document.createElement('li');
+          listItem.classList.add(pub.subject);
+          listItem.innerHTML = `<a href="#">${pub.name}</a>`;
+          
+          if (lists[pub.type]) {
+            lists[pub.type].appendChild(listItem);
+          }
+        });
+      }
       applyFilters();
     }
 
+    // Função para aplicar os filtros
     function applyFilters() {
       const docType = document.getElementById('document-filter').value;
       const subject = document.getElementById('subject-filter').value;
@@ -120,11 +138,25 @@
           } else {
             item.style.display = 'none';
           }
-        } else {
-          item.style.display = 'none';
+        }
+      });
+
+      // Se uma seção estiver visível, mas não tiver itens visíveis, mostra a mensagem de "nenhum item"
+      allSections.forEach(section => {
+        if (section.style.display === 'block') {
+          const visibleItems = section.querySelectorAll('li[style*="list-item"]');
+          if (visibleItems.length === 0) {
+            const noItemsMessage = document.createElement('li');
+            noItemsMessage.textContent = 'Nenhuma publicação encontrada com esses filtros.';
+            section.querySelector('ul').appendChild(noItemsMessage);
+          }
         }
       });
     }
+
+    // Chama a função ao carregar a página
+    window.onload = loadAndRenderPublications;
+
   </script>
 </body>
 </html>
