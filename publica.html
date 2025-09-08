@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicações - DISET</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Estilos básicos para a página de publicações */
+    .sub-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      background-color: #f0f0f0;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+    }
+    .sub-botao {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .sub-botao:hover {
+      background-color: #004d80;
+      color: white;
+    }
+    .document-section {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .document-section h2 {
+      border-bottom: 2px solid #004d80;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: #004d80;
+    }
+    .document-section ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .document-section li {
+      margin-bottom: 1rem;
+    }
+    .document-section li a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+    .document-section li a:hover {
+      text-decoration: underline;
+      color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo gdf.png" alt="Logo GDF">
+    <h1>Publicações - DISET</h1>
+  </header>
+  <main class="main-content">
+    <nav class="sub-nav">
+      <a class="sub-botao" href="#portarias">Portarias</a>
+      <a class="sub-botao" href="#leis">Leis</a>
+      <a class="sub-botao" href="#outros">Outros Documentos</a>
+    </nav>
+
+    <section id="portarias" class="document-section">
+      <h2>Portarias</h2>
+      <ul>
+        <li><a href="#">Portaria Nº 520, de 08 de maio de 2025 - Normas para lotação, exercício e remanejamento.</a></li>
+        <!-- Adicione mais portarias aqui -->
+      </ul>
+    </section>
+
+    <section id="leis" class="document-section">
+      <h2>Leis</h2>
+      <ul>
+        <li><a href="#">Lei Nº 84, de 16 de setembro de 2024 - Dispõe sobre o Magistério Público do Distrito Federal.</a></li>
+        <!-- Adicione mais leis aqui -->
+      </ul>
+    </section>
+
+    <section id="outros" class="document-section">
+      <h2>Outros Documentos</h2>
+      <ul>
+        <li><a href="#">Edital de Chamada Pública Nº XX/2025 - Vagas para atuação em projetos específicos.</a></li>
+        <!-- Adicione outros documentos aqui -->
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
+  </footer>
+</body>
+</html>
