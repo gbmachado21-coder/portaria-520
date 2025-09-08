@@ -73,6 +73,38 @@
     .card {
         padding: 2rem;
     }
+
+    /* Estilos para o menu de filtros */
+    .filter-menu {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #f0f2f5;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .filter-menu button {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-menu button:hover {
+      background-color: #e9ecef;
+    }
+    
+    .filter-menu button.active {
+      background-color: #002d62;
+      color: white;
+      border-color: #002d62;
+    }
   </style>
 </head>
 <body>
@@ -82,6 +114,15 @@
   </header>
   <main class="main-content">
     <div class="card">
+      <!-- Menu de filtros -->
+      <div class="filter-menu">
+        <button data-filter-type="todos" class="active">Todos</button>
+        <button data-filter-type="portarias">Portarias</button>
+        <button data-filter-type="leis">Leis</button>
+        <button data-filter-type="resolucoes">Resoluções</button>
+        <button data-filter-type="outros">Outros Documentos</button>
+      </div>
+      
       <div id="publications-container">
         <!-- Publicações serão carregadas aqui -->
       </div>
@@ -110,14 +151,32 @@
       }
       
       loadAndRenderPublications();
+      setupFilters();
     });
 
-    function loadAndRenderPublications() {
+    function setupFilters() {
+      const filterButtons = document.querySelectorAll('.filter-menu button');
+      filterButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const filterType = e.target.dataset.filterType;
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          e.target.classList.add('active');
+          loadAndRenderPublications(filterType);
+        });
+      });
+    }
+
+    function loadAndRenderPublications(filterType = 'todos') {
       const container = document.getElementById('publications-container');
       container.innerHTML = '';
       const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
       
-      const groupedPublications = publications.reduce((acc, pub) => {
+      let filteredPublications = publications;
+      if (filterType !== 'todos') {
+        filteredPublications = publications.filter(pub => pub.type === filterType);
+      }
+
+      const groupedPublications = filteredPublications.reduce((acc, pub) => {
         if (!acc[pub.type]) {
           acc[pub.type] = [];
         }
@@ -125,8 +184,8 @@
         return acc;
       }, {});
 
-      if (publications.length === 0) {
-        container.innerHTML = '<p>Nenhuma publicação encontrada.</p>';
+      if (filteredPublications.length === 0) {
+        container.innerHTML = '<p>Nenhuma publicação encontrada para o filtro selecionado.</p>';
         return;
       }
       
