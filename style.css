@@ -1,4 +1,3 @@
-/* Estilos globais */
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
@@ -40,48 +39,128 @@ header h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 400px;
 }
 
-.card {
-  padding: 2rem;
+/* Adicionando justificação de texto para parágrafos */
+p {
+  text-align: justify;
+}
+
+/* Adicionando justificação de texto para itens de lista */
+li {
+  text-align: justify;
+}
+
+.intro-text {
+  font-size: 18px;
+  color: #555;
+  text-align: justify;
+  margin-bottom: 30px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.botoes-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
   width: 100%;
 }
 
 .botao {
-  display: inline-block;
-  padding: 12px 24px;
-  background-color: #002d62;
-  color: #ffffff;
+  background-color: #007bff;
+  color: white;
+  padding: 15px 30px;
   text-decoration: none;
   border-radius: 5px;
-  font-weight: bold;
   transition: background-color 0.3s ease;
+  min-width: 250px;
   text-align: center;
 }
 
 .botao:hover {
-  background-color: #004085;
+  background-color: #0056b3;
 }
 
-.back-button-container {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.back-button {
+.botao-voltar {
   background-color: #007bff;
   color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 15px 30px;
   text-decoration: none;
-  font-weight: bold;
+  border-radius: 5px;
   transition: background-color 0.3s ease;
+  margin-top: 30px;
 }
 
-.back-button:hover {
+.botao-voltar:hover {
   background-color: #0056b3;
+}
+
+.container {
+  margin-top: 40px;
+  text-align: left;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+details {
+  background-color: #e9f7ff;
+  border: 1px solid #cceeff;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 15px;
+  color: #002d62;
+  font-size: 1.1em;
+  list-style-type: none;
+  position: relative;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::before {
+  content: "+";
+  font-weight: bold;
+  position: absolute;
+  right: 15px;
+  transition: transform 0.3s ease;
+}
+
+details[open] summary::before {
+  content: "−";
+  transform: rotate(180deg);
+}
+
+.answer-content {
+  padding: 0 15px 15px 15px;
+  border-top: 1px solid #cceeff;
+}
+
+h2 {
+  text-align: center;
+  width: 100%;
+  margin-top: 30px;
+  color: #333;
 }
 
 footer {
@@ -89,112 +168,125 @@ footer {
   color: white;
   text-align: center;
   padding: 1rem;
-  margin-top: 2rem;
+  margin-top: 40px;
+  font-size: 0.9rem;
 }
 
-/* Estilos para o agrupamento de publicações */
-.publications-group {
-  margin-bottom: 2rem;
-  border: 1px solid #ccc;
+.contact-section {
+  background-color: #f8f9fa;
+  border-left: 5px solid #007bff;
+  padding: 20px;
+  margin-bottom: 25px;
   border-radius: 8px;
-  overflow: hidden;
-  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box; /* Garante que padding e border não aumentem a largura */
 }
 
-.group-header {
-  background-color: #002d62;
-  color: white;
-  padding: 1rem;
+.contact-section h2 {
   font-size: 1.5em;
-  cursor: pointer;
+  color: #002d62;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.contact-section p, .contact-section ul {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  text-align: justify; /* Aplicado a parágrafos e listas */
+}
+
+.contact-section ul {
+  padding-left: 20px;
+}
+
+/* Estilos da página de publicações */
+.filter-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
-
-.group-header:hover {
-  background-color: #004085;
+.filter-container label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
 }
-
-.group-list {
+.filter-container select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+.sub-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+}
+.sub-botao {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+}
+.sub-botao:hover {
+  background-color: #004d80;
+  color: white;
+}
+.document-section {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.document-section h2 {
+  border-bottom: 2px solid #004d80;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: #004d80;
+}
+.document-section ul {
   list-style-type: none;
   padding: 0;
-  margin: 0;
-  display: none; /* Inicia escondido */
 }
-
-.group-list li {
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+.document-section li {
+  margin-bottom: 1rem;
 }
-
-.group-list li:last-child {
-  border-bottom: none;
-}
-
-.group-list a {
+.document-section li a {
   color: #007bff;
   text-decoration: none;
-  font-weight: 500;
+  font-size: 1.1rem;
+  transition: color 0.3s;
 }
-
-.group-list a:hover {
+.document-section li a:hover {
   text-decoration: underline;
+  color: #0056b3;
 }
-
-.group-toggle-icon {
-  font-size: 1.5em;
-  transition: transform 0.3s ease;
+.back-button-container {
+  text-align: center;
+  margin-top: 2rem;
 }
-
-.publications-group.open .group-list {
-  display: block;
-}
-
-.publications-group.open .group-toggle-icon {
-  transform: rotate(90deg);
-}
-
-/* Estilos para o menu de filtros e botão de inclusão */
-.filter-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.filter-fields {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.filter-fields label,
-.filter-fields select {
-  font-size: 1.1em;
-}
-
-.filter-fields select {
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.include-button {
-  padding: 10px 20px;
-  background-color: #007bff;
+.back-button {
+  background-color: #6c757d;
   color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
+  padding: 10px 20px;
   text-decoration: none;
-  display: inline-block;
-  margin-top: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
 }
-
-.include-button:hover {
-  background-color: #0056b3;
+.back-button:hover {
+  background-color: #5a6268;
 }
