@@ -30,7 +30,7 @@ header h1 {
 
 .main-content {
   background-color: #dcdcdc; /* Cinza claro como na imagem */
-  max-width: 900px;
+  max-width: 9200px;
   margin: 40px auto;
   padding: 30px;
   border-radius: 10px;
@@ -290,3 +290,4 @@ footer {
 .back-button:hover {
   background-color: #5a6268;
 }
+
