@@ -136,11 +136,11 @@ footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
     padding: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
-    width: fit-content;
+    width: flex;
     margin: 20px auto;
 }
 
@@ -353,6 +353,7 @@ th {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
 
 
 
