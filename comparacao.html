@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparação de Imagens</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .image-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .image-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      flex: 1 1 45%; /* Permite que os itens se ajustem e quebrem a linha */
+      box-sizing: border-box;
+      min-width: 300px; /* Garante que as imagens não fiquem muito pequenas */
+    }
+    .image-item img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .caption {
+      font-weight: bold;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Comparação de Imagens</h1>
+
+  <div class="image-container">
+    <div class="image-item">
+      <img src="image_7923b7.jpg" alt="Imagem 1">
+      <span class="caption">Imagem 1</span>
+    </div>
+    <div class="image-item">
+      <img src="image_91abc4.jpg" alt="Imagem 2">
+      <span class="caption">Imagem 2</span>
+    </div>
+  </div>
+
+</body>
+</html>
