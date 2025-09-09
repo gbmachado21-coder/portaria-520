@@ -39,7 +39,7 @@ header h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100px;
+  min-height: 400px;
 }
 
 /* Adicionando justificação de texto para parágrafos */
@@ -73,7 +73,7 @@ li {
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
-  width: 10%;
+  width: 100%;
 }
 
 .botao {
@@ -290,6 +290,3 @@ footer {
 .back-button:hover {
   background-color: #5a6268;
 }
-
-
-
