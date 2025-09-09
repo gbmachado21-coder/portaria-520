@@ -154,7 +154,7 @@ footer {
     font-weight: bold;
     text-align: center;
     transition: background-color 0.3s ease;
-    min-width: 250px;
+    min-width: 2550px;
     box-sizing: border-box;
 }
 
@@ -353,6 +353,7 @@ th {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
 
 
 
