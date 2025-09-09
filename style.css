@@ -113,14 +113,15 @@ footer {
 }
 
 .botao-voltar {
-    display: inline-block;
+    display: block;
     background-color: #003366;
     color: white;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
-    margin-top: 20px;
+    margin: 20px auto 0;
     transition: background-color 0.3s ease;
+    width: fit-content;
 }
 
 .botao-voltar:hover {
@@ -135,6 +136,8 @@ footer {
     padding: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
+    width: fit-content;
+    margin: 20px auto;
 }
 
 .botao {
