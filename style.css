@@ -1,180 +1,80 @@
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  margin: 0;
-  background-color: #f0f2f5;
-  color: #333;
+/* Estilos para o container dos botões */
+.botoes-container {
+    display: flex; /* Isso fará com que os botões se alinhem em uma linha */
+    flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha em telas menores */
+    justify-content: center; /* Centraliza os botões horizontalmente */
+    align-items: center; /* Centraliza os botões verticalmente (se houver variação de altura) */
+    gap: 15px; /* Adiciona um espaço entre os botões */
+    padding: 20px; /* Um pouco de preenchimento ao redor do container */
+    max-width: 900px; /* Limita a largura máxima do container para melhor visualização */
+    margin: 30px auto; /* Centraliza o container na página */
+    background-color: #f0f0f0; /* Um fundo claro para o container, apenas para visualização */
+    border-radius: 8px; /* Cantos arredondados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
-header {
-  background-color: #002d62;
-  color: white;
-  padding: 1.5rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-header img {
-  height: 60px;
-  margin-right: 20px;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 2.2em;
-  flex-grow: 1;
-  text-align: center;
-}
-
-.main-content {
-  background-color: #dcdcdc; /* Cinza claro como na imagem */
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 150px); /* Ajusta a altura para telas pequenas */
-}
-
-.container {
-  width: 100%;
-}
-
-h2 {
-  font-size: 1.8em;
-  color: #004d80;
-  margin-bottom: 1rem;
-}
-
-.nav {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 2100%;
-  align-items: center;
-}
-
+/* Estilos para os botões individuais */
 .botao {
-  padding: 1rem 2rem;
-  background-color: #004d80;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: background-color 0.3s;
-  width: 80%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* Garante que o padding e a largura funcionem bem */
+    padding: 12px 25px; /* Aumenta o padding para que o texto caiba e o botão seja maior */
+    background-color: #003366; /* Cor de fundo azul escura, combinando com o header */
+    color: white; /* Texto branco */
+    text-decoration: none; /* Remove sublinhado dos links */
+    border-radius: 5px; /* Bordas levemente arredondadas */
+    font-size: 1.1em; /* Tamanho da fonte um pouco maior para leitura */
+    font-weight: bold; /* Deixa o texto em negrito */
+    text-align: center; /* Centraliza o texto dentro do botão */
+    transition: background-color 0.3s ease; /* Efeito de transição ao passar o mouse */
+    min-width: 200px; /* Define uma largura mínima para os botões */
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura/altura */
 }
 
 .botao:hover {
-  background-color: #002d62;
+    background-color: #0055a4; /* Cor mais clara ao passar o mouse */
 }
 
-.sub-nav {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 1rem 0;
-  background-color: #f0f0f0;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-  z-index: 1000;
+/* Estilo para o botão "Voltar" */
+.botao[href="index.html"] {
+    background-color: #555; /* Uma cor diferente para o botão Voltar, se desejar */
 }
 
-.sub-botao {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #888;
-  text-decoration: none;
-  border-radius: 6px;
-  transition: background-color 0.3s, color 0.3s;
+.botao[href="index.html"]:hover {
+    background-color: #777;
 }
 
-.sub-botao:hover {
-  background-color: #004d80;
-  color: white;
+/* Seções da página (header, main, footer) */
+header {
+    background-color: #003366;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o conteúdo do header */
+    text-align: center;
+}
+
+header img {
+    height: 50px; /* Ajuste o tamanho do logo conforme necessário */
+    margin-right: 15px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo principal */
+    align-items: center;
+    min-height: calc(100vh - 120px); /* Ajusta a altura para preencher a tela menos header e footer */
+    padding: 20px;
 }
 
 footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: #002d62;
-  color: white;
-  position: relative;
-  margin-top: 2rem;
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9em;
 }
-
-.filter-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  width: 100%;
-  padding: 1rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.filter-container label,
-.filter-container select {
-  width: 100%;
-}
-
-.filter-container select {
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
-}
-
-.document-section {
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-.document-section h2 {
-  border-bottom: 2px solid #004d80;
-  padding-bottom: 0.5rem;
-}
-
-.document-section ul {
-  list-style: none;
-  padding: 0;
-}
-
-.document-section li {
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-radius: 4px;
-}
-
-.document-section li a {
-  text-decoration: none;
-  color: #004d80;
-  font-weight: bold;
-}
-
-.document-section li a:hover {
-  text-decoration: underline;
-}
-
-
