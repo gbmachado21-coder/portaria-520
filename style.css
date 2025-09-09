@@ -28,7 +28,7 @@ h1, h2 {
     color: #003366;
 }
 
-.main-content {
+.nav-index {
     padding: 20px;
     text-align: center;
 }
@@ -350,6 +350,7 @@ th {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
 
 
 
