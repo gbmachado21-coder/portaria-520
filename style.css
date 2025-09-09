@@ -1,40 +1,17 @@
-/* Container que agrupa todos os botões na página */
-.botoes-container {
-    display: flex; /* Alinha os itens em uma linha */
-    flex-wrap: wrap; /* Quebra para a linha de baixo em telas pequenas */
-    justify-content: center; /* Centraliza os botões horizontalmente */
-    gap: 15px; /* Adiciona um espaçamento de 15px entre os botões */
-    padding: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+/* Centraliza o conteúdo principal da página */
+.main-content {
+    text-align: center; /* Centraliza o texto */
+    max-width: 800px; /* Limita a largura para melhor leitura */
+    margin: 40px auto; /* Centraliza o bloco na página */
+    padding: 0 20px;
 }
 
-/* Estilo para cada botão individual */
-.botao {
+/* Centraliza o conteúdo dentro do cabeçalho */
+header {
     background-color: #003366;
     color: white;
-    text-decoration: none;
-    padding: 15px 25px; /* Aumenta o espaçamento interno para o texto caber */
-    border-radius: 5px;
-    font-size: 1em;
-    font-weight: bold;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    min-width: 250px; /* Garante que o botão tenha uma largura mínima para o texto */
-    box-sizing: border-box; /* O padding é incluído na largura, prevenindo estouros */
-}
-
-/* Efeito ao passar o mouse */
-.botao:hover {
-    background-color: #0055a4;
-}
-
-/* Estilo para o botão "Voltar" */
-.botao[href="index.html"] {
-    background-color: #777;
-    min-width: auto; /* Permite que o botão de voltar seja menor */
-}
-
-.botao[href="index.html"]:hover {
-    background-color: #555;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Organiza os elementos verticalmente */
+    align-items: center; /* Centraliza horizontalmente (o quebra-cabeça do CSS) */
 }
