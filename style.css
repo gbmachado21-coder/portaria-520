@@ -10,7 +10,7 @@ body {
 header {
     background-color: #003366;
     color: white;
-    padding: 20px 0;
+    padding: 10px 0;
     text-align: center;
     border-bottom: 5px solid #ffcc29;
     display: flex;
@@ -131,7 +131,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 25px;
+    gap: 15px;
     padding: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -302,7 +302,15 @@ th {
   padding: 0;
 }
 
-.document-section li {
+botoes-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}.document-section li {
   background-color: #f9f9f9;
   padding: 10px;
   border: 1px solid #ddd;
@@ -351,4 +359,3 @@ th {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-
