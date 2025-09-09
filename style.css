@@ -1,80 +1,40 @@
-/* Estilos para o container dos botões */
+/* Container que agrupa todos os botões na página */
 .botoes-container {
-    display: flex; /* Isso fará com que os botões se alinhem em uma linha */
-    flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha em telas menores */
+    display: flex; /* Alinha os itens em uma linha */
+    flex-wrap: wrap; /* Quebra para a linha de baixo em telas pequenas */
     justify-content: center; /* Centraliza os botões horizontalmente */
-    align-items: center; /* Centraliza os botões verticalmente (se houver variação de altura) */
-    gap: 15px; /* Adiciona um espaço entre os botões */
-    padding: 20px; /* Um pouco de preenchimento ao redor do container */
-    max-width: 900px; /* Limita a largura máxima do container para melhor visualização */
-    margin: 30px auto; /* Centraliza o container na página */
-    background-color: #f0f0f0; /* Um fundo claro para o container, apenas para visualização */
-    border-radius: 8px; /* Cantos arredondados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    gap: 15px; /* Adiciona um espaçamento de 15px entre os botões */
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-/* Estilos para os botões individuais */
+/* Estilo para cada botão individual */
 .botao {
-    display: inline-block; /* Garante que o padding e a largura funcionem bem */
-    padding: 12px 25px; /* Aumenta o padding para que o texto caiba e o botão seja maior */
-    background-color: #003366; /* Cor de fundo azul escura, combinando com o header */
-    color: white; /* Texto branco */
-    text-decoration: none; /* Remove sublinhado dos links */
-    border-radius: 5px; /* Bordas levemente arredondadas */
-    font-size: 1.1em; /* Tamanho da fonte um pouco maior para leitura */
-    font-weight: bold; /* Deixa o texto em negrito */
-    text-align: center; /* Centraliza o texto dentro do botão */
-    transition: background-color 0.3s ease; /* Efeito de transição ao passar o mouse */
-    min-width: 200px; /* Define uma largura mínima para os botões */
-    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura/altura */
+    background-color: #003366;
+    color: white;
+    text-decoration: none;
+    padding: 15px 25px; /* Aumenta o espaçamento interno para o texto caber */
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    min-width: 250px; /* Garante que o botão tenha uma largura mínima para o texto */
+    box-sizing: border-box; /* O padding é incluído na largura, prevenindo estouros */
 }
 
+/* Efeito ao passar o mouse */
 .botao:hover {
-    background-color: #0055a4; /* Cor mais clara ao passar o mouse */
+    background-color: #0055a4;
 }
 
 /* Estilo para o botão "Voltar" */
 .botao[href="index.html"] {
-    background-color: #555; /* Uma cor diferente para o botão Voltar, se desejar */
+    background-color: #777;
+    min-width: auto; /* Permite que o botão de voltar seja menor */
 }
 
 .botao[href="index.html"]:hover {
-    background-color: #777;
-}
-
-/* Seções da página (header, main, footer) */
-header {
-    background-color: #003366;
-    color: white;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centraliza o conteúdo do header */
-    text-align: center;
-}
-
-header img {
-    height: 50px; /* Ajuste o tamanho do logo conforme necessário */
-    margin-right: 15px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2em;
-}
-
-.main-content {
-    display: flex;
-    justify-content: center; /* Centraliza o conteúdo principal */
-    align-items: center;
-    min-height: calc(100vh - 120px); /* Ajusta a altura para preencher a tela menos header e footer */
-    padding: 20px;
-}
-
-footer {
-    background-color: #003366;
-    color: white;
-    text-align: center;
-    padding: 15px;
-    font-size: 0.9em;
+    background-color: #555;
 }
