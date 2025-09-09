@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Publicações - DISET</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <nav class="top-nav">
+    <a href="index.html" class="nav-item">Início</a>
+    <a href="remane.html" class="nav-item">Remanejamento</a>
+    <a href="publica.html" class="nav-item active">Publicações</a>
+    <a href="contatos.html" class="nav-item">Conheça a DISET</a>
+  </nav>
+
   <header>
     <img src="logo gdf.png" alt="Logo GDF">
     <h1>Publicações - DISET</h1>
   </header>
+  
   <main class="main-content">
     <div class="container">
       <div class="filter-container">
@@ -27,97 +34,38 @@
         <select id="subject-filter" onchange="applyFilters()">
           <option value="all">Todos</option>
           <option value="remanejamento">Remanejamento</option>
-          <option value="ferias">Férias</option>
-          <option value="abono-permanencia">Abono Permanência</option>
-          <option value="outros-assuntos">Outros</option>
+          <option value="lotação">Lotação</option>
+          <option value="gestao">Gestão de Pessoas</option>
         </select>
       </div>
 
-     <div class="nav">
-      <a href="index.html" class="back-button">Voltar para a página inicial</a>
-      <a href="gestao.html" class="back-button">Gerxxxxenciar Publicações</a>
-    </div>
-
-      <div class="document-section portarias">
-        <h2>Portarias</h2>
-        <ul id="portarias-list">
-          <li>Nenhuma publicação encontrada.</li>
-        </ul>
+      <div id="publicacoes-lista">
+        <!-- Lista de publicações será renderizada aqui -->
+        <section class="document-section portarias remanejamento">
+          <h2>Portarias</h2>
+          <ul>
+            <li class="remanejamento">Portaria nº 520, de 08 de maio de 2025 - Remanejamento</li>
+            <li class="remanejamento">Portaria nº 550, de 10 de maio de 2025 - Procedimento de Remanejamento</li>
+          </ul>
+        </section>
+        <section class="document-section leis gestao">
+          <h2>Leis</h2>
+          <ul>
+            <li class="gestao">Lei Complementar nº 840, de 23 de dezembro de 2011 - Regime Jurídico</li>
+          </ul>
+        </section>
       </div>
-
-      <div class="document-section leis">
-        <h2>Leis</h2>
-        <ul id="leis-list">
-          <li>Nenhuma publicação encontrada.</li>
-        </ul>
-      </div>
-
-      <div class="document-section resolucoes">
-        <h2>Resoluções</h2>
-        <ul id="resolucoes-list">
-          <li>Nenhuma publicação encontrada.</li>
-        </ul>
-      </div>
-      
-      <div class="document-section outros">
-        <h2>Outros Documentos</h2>
-        <ul id="outros-list">
-          <li>Nenhuma publicação encontrada.</li>
-        </ul>
-      </div>
-
     </div>
   </main>
 
   <footer>
-    <p>Projeto de Apoio e Gestão - DISET © 2025</p>
+    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
-
+  
   <script>
-    // Função para carregar publicações do localStorage e renderizar na página
-    function loadAndRenderPublications() {
-      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-      const lists = {
-        portarias: document.getElementById('portarias-list'),
-        leis: document.getElementById('leis-list'),
-        resolucoes: document.getElementById('resolucoes-list'),
-        outros: document.getElementById('outros-list')
-      };
-
-      // Limpa as listas antes de renderizar
-      for (let key in lists) {
-        if (lists[key]) {
-          lists[key].innerHTML = '';
-        }
-      }
-      
-      if (publications.length === 0) {
-        for (let key in lists) {
-          if (lists[key]) {
-            const noPubsItem = document.createElement('li');
-            noPubsItem.textContent = 'Nenhuma publicação encontrada.';
-            lists[key].appendChild(noPubsItem);
-          }
-        }
-      } else {
-        publications.forEach(pub => {
-          const listItem = document.createElement('li');
-          listItem.classList.add(pub.subject);
-          listItem.innerHTML = `<a href="#">${pub.name}</a>`;
-          
-          if (lists[pub.type]) {
-            lists[pub.type].appendChild(listItem);
-          }
-        });
-      }
-      applyFilters();
-    }
-
-    // Função para aplicar os filtros
     function applyFilters() {
       const docType = document.getElementById('document-filter').value;
       const subject = document.getElementById('subject-filter').value;
-
       const allSections = document.querySelectorAll('.document-section');
       
       allSections.forEach(section => {
@@ -140,30 +88,10 @@
           }
         }
       });
-
-      // Se uma seção estiver visível, mas não tiver itens visíveis, mostra a mensagem de "nenhum item"
-      allSections.forEach(section => {
-        if (section.style.display === 'block') {
-          const visibleItems = section.querySelectorAll('li[style*="list-item"]');
-          if (visibleItems.length === 0) {
-            const noItemsMessage = document.createElement('li');
-            noItemsMessage.textContent = 'Nenhuma publicação encontrada com esses filtros.';
-            section.querySelector('ul').appendChild(noItemsMessage);
-          }
-        }
-      });
     }
 
     // Chama a função ao carregar a página
-    window.onload = loadAndRenderPublications;
-
+    window.onload = applyFilters;
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
