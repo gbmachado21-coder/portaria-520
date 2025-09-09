@@ -131,7 +131,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 25px;
     padding: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -351,3 +351,4 @@ th {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
