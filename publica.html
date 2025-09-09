@@ -1,141 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Publicações - DISET</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicações - DISET</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <img src="logo gdf.png" alt="Logo GDF">
-    <h1>Publicações - DISET</h1>
-   </header>
-  <main class="main-content">
-    <div class="container">
-      <div class="filter-container">
-        <a class="botao-voltar" href="gestao.html">⬅Gerenciar Publicações</a> 
-        <label for="document-filter">Filtrar por tipo de documento:</label>
-        <select id="document-filter" onchange="applyFilters()">
-          <option value="all">Todos</option>
-          <option value="portarias">Portarias</option>
-          <option value="leis">Leis</option>
-          <option value="resolucoes">Resoluções</option>
-          <option value="outros">Outros Documentos</option>
-        </select>
-        <label for="subject-filter">Filtrar por assunto:</label>
-        <select id="subject-filter" onchange="applyFilters()">
-          <option value="all">Todos</option>
-          <option value="remanejamento">Remanejamento</option>
-          <option value="licenca">Licença</option>
-          <option value="jornada">Jornada de Trabalho</option>
-          <option value="posse">Posse/Exercício</option>
-          <option value="aposentadoria">Aposentadoria</option>
-          <option value="concurso">Concurso Público</option>
-          <option value="outros">Outros Assuntos</option>
-        </select>
-      </div>
+  <header>
+    <img src="logo gdf.png" alt="Logo GDF">
+    <h1>Publicações - DISET</h1>
+  </header>
+  <main class="main-content">
+    <div class="container">
+      <div class="filter-container">
+        <a class="botao-voltar" href="gestao.html">⬅Gerenciar Publicações</a> 
+        <label for="document-filter">Filtrar por tipo de documento:</label>
+        <select id="document-filter" onchange="applyFilters()">
+          <option value="all">Todos</option>
+          <option value="portarias">Portarias</option>
+          <option value="leis">Leis</option>
+          <option value="resolucoes">Resoluções</option>
+          <option value="outros">Outros Documentos</option>
+        </select>
+        <label for="subject-filter">Filtrar por assunto:</label>
+        <select id="subject-filter" onchange="applyFilters()">
+          <option value="all">Todos</option>
+          <option value="remanejamento">Remanejamento</option>
+          <option value="licenca">Licença</option>
+          <option value="jornada">Jornada de Trabalho</option>
+          <option value="posse">Posse/Exercício</option>
+          <option value="aposentadoria">Aposentadoria</option>
+          <option value="concurso">Concurso Público</option>
+          <option value="outros">Outros Assuntos</option>
+        </select>
+      </div>
 
-      <div id="publications-list">
-        <!-- As publicações serão carregadas dinamicamente aqui -->
-      </div>
-    </div>
-  </main>
+      <div id="publications-list">
+        <!-- As publicações serão carregadas dinamicamente aqui -->
+      </div>
+    </div>
+  </main>
 
-  <footer>
-    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
-  </footer>
+  <footer>
+    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
+  </footer>
 
-  <script>
-    // JSON com os dados das publicações
-    const publicationsData = {
-      "portarias": [
-        {
-          "title": "Portaria nº 520, de 08 de maio de 2025",
-          "link": "Portaria 520 de 08_05_2025.pdf",
-          "subjects": ["remanejamento", "jornada"]
-        },
-        {
-          "title": "Portaria nº 100, de 02 de fevereiro de 2025",
-          "link": "#",
-          "subjects": ["licenca", "aposentadoria"]
-        }
-      ],
-      "leis": [
-        {
-          "title": "Lei nº 1000, de 15 de janeiro de 2025",
-          "link": "#",
-          "subjects": ["concurso", "posse"]
-        }
-      ],
-      "resolucoes": [
-        {
-          "title": "Resolução nº 5, de 10 de abril de 2025",
-          "link": "#",
-          "subjects": ["jornada", "licenca"]
-        }
-      ],
-      "outros": [
-        {
-          "title": "Memorando-Circular nº 25, de 05 de março de 2025",
-          "link": "#",
-          "subjects": ["remanejamento", "outros"]
-        }
-      ]
-    };
+  <script>
+    // Função para buscar as publicações no localStorage e agrupá-las por tipo
+    function getPublicationsFromStorage() {
+      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+      const groupedData = {
+        "portarias": [],
+        "leis": [],
+        "resolucoes": [],
+        "outros": []
+      };
 
-    // Função para renderizar as publicações com base nos filtros
-    function renderPublications() {
-      const selectedDocType = document.getElementById('document-filter').value;
-      const selectedSubject = document.getElementById('subject-filter').value;
-      const publicationsList = document.getElementById('publications-list');
-      publicationsList.innerHTML = '';
+      publications.forEach(pub => {
+        if (groupedData[pub.type]) {
+          groupedData[pub.type].push({
+            title: pub.name,
+            link: pub.fileName ? '#' : '#', // Você pode ajustar o link se tiver o URL real do arquivo
+            subjects: [pub.subject]
+          });
+        }
+      });
+      return groupedData;
+    }
 
-      const docTypes = selectedDocType === 'all' ? Object.keys(publicationsData) : [selectedDocType];
+    // Função para renderizar as publicações com base nos filtros
+    function renderPublications() {
+      const selectedDocType = document.getElementById('document-filter').value;
+      const selectedSubject = document.getElementById('subject-filter').value;
+      const publicationsList = document.getElementById('publications-list');
+      publicationsList.innerHTML = '';
+      
+      const publicationsData = getPublicationsFromStorage();
 
-      docTypes.forEach(docType => {
-        const publications = publicationsData[docType];
-        if (!publications || publications.length === 0) {
-          return;
-        }
+      const docTypes = selectedDocType === 'all' ? Object.keys(publicationsData) : [selectedDocType];
 
-        const filteredPublications = publications.filter(pub => {
-          return selectedSubject === 'all' || pub.subjects.includes(selectedSubject);
-        });
+      docTypes.forEach(docType => {
+        const publications = publicationsData[docType];
+        if (!publications || publications.length === 0) {
+          return;
+        }
 
-        if (filteredPublications.length > 0) {
-          const sectionTitle = docType.charAt(0).toUpperCase() + docType.slice(1);
-          const sectionHTML = `
-            <div class="document-section ${docType}">
-              <h2>${sectionTitle}</h2>
-              <ul>
-                ${filteredPublications.map(pub => `
-                  <li class="${pub.subjects.join(' ')}">
-                    <a href="${pub.link}" target="_blank">${pub.title}</a>
-                  </li>
-                `).join('')}
-              </ul>
-            </div>
-          `;
-          publicationsList.innerHTML += sectionHTML;
-        }
-      });
-      
-      if (publicationsList.innerHTML === '') {
-          publicationsList.innerHTML = '<p class="no-results-message">Nenhuma publicação encontrada com esses filtros.</p>';
-      }
-    }
+        const filteredPublications = publications.filter(pub => {
+          return selectedSubject === 'all' || pub.subjects.includes(selectedSubject);
+        });
 
-    // Função para aplicar os filtros
-    function applyFilters() {
-      renderPublications();
-    }
+        if (filteredPublications.length > 0) {
+          const sectionTitle = docType.charAt(0).toUpperCase() + docType.slice(1);
+          const sectionHTML = `
+            <div class="document-section ${docType}">
+              <h2>${sectionTitle}</h2>
+              <ul>
+                ${filteredPublications.map(pub => `
+                  <li class="${pub.subjects.join(' ')}">
+                    <a href="${pub.link}" target="_blank">${pub.title}</a>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          `;
+          publicationsList.innerHTML += sectionHTML;
+        }
+      });
+      
+      if (publicationsList.innerHTML === '') {
+          publicationsList.innerHTML = '<p class="no-results-message">Nenhuma publicação encontrada com esses filtros.</p>';
+      }
+    }
 
-    // Renderiza as publicações ao carregar a página
-    window.onload = renderPublications;
-  </script>
+    // Função para aplicar os filtros
+    function applyFilters() {
+      renderPublications();
+    }
+
+    // Renderiza as publicações ao carregar a página
+    window.onload = renderPublications;
+  </script>
 </body>
 </html>
-
-
