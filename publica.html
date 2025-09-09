@@ -1,24 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Publicações - DISET</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="index.html" class="nav-item">Início</a>
-    <a href="remane.html" class="nav-item">Remanejamento</a>
-    <a href="publica.html" class="nav-item active">Publicações</a>
-    <a href="contatos.html" class="nav-item">Conheça a DISET</a>
-  </nav>
-
   <header>
     <img src="logo gdf.png" alt="Logo GDF">
     <h1>Publicações - DISET</h1>
   </header>
-  
   <main class="main-content">
     <div class="container">
       <div class="filter-container">
@@ -34,26 +27,17 @@
         <select id="subject-filter" onchange="applyFilters()">
           <option value="all">Todos</option>
           <option value="remanejamento">Remanejamento</option>
-          <option value="lotação">Lotação</option>
-          <option value="gestao">Gestão de Pessoas</option>
+          <option value="licenca">Licença</option>
+          <option value="jornada">Jornada de Trabalho</option>
+          <option value="posse">Posse/Exercício</option>
+          <option value="aposentadoria">Aposentadoria</option>
+          <option value="concurso">Concurso Público</option>
+          <option value="outros">Outros Assuntos</option>
         </select>
       </div>
 
-      <div id="publicacoes-lista">
-        <!-- Lista de publicações será renderizada aqui -->
-        <section class="document-section portarias remanejamento">
-          <h2>Portarias</h2>
-          <ul>
-            <li class="remanejamento">Portaria nº 520, de 08 de maio de 2025 - Remanejamento</li>
-            <li class="remanejamento">Portaria nº 550, de 10 de maio de 2025 - Procedimento de Remanejamento</li>
-          </ul>
-        </section>
-        <section class="document-section leis gestao">
-          <h2>Leis</h2>
-          <ul>
-            <li class="gestao">Lei Complementar nº 840, de 23 de dezembro de 2011 - Regime Jurídico</li>
-          </ul>
-        </section>
+      <div id="publications-list">
+        <!-- As publicações serão carregadas dinamicamente aqui -->
       </div>
     </div>
   </main>
@@ -61,37 +45,94 @@
   <footer>
     <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
-  
-  <script>
-    function applyFilters() {
-      const docType = document.getElementById('document-filter').value;
-      const subject = document.getElementById('subject-filter').value;
-      const allSections = document.querySelectorAll('.document-section');
-      
-      allSections.forEach(section => {
-        if (docType === 'all' || section.classList.contains(docType)) {
-          section.style.display = 'block';
-        } else {
-          section.style.display = 'none';
-        }
-      });
 
-      const allItems = document.querySelectorAll('li');
-      allItems.forEach(item => {
-        const itemIsVisibleByType = item.closest('.document-section').style.display !== 'none';
-        
-        if (itemIsVisibleByType) {
-          if (subject === 'all' || item.classList.contains(subject)) {
-            item.style.display = 'list-item';
-          } else {
-            item.style.display = 'none';
-          }
+  <script>
+    // JSON com os dados das publicações
+    const publicationsData = {
+      "portarias": [
+        {
+          "title": "Portaria nº 520, de 08 de maio de 2025",
+          "link": "Portaria 520 de 08_05_2025.pdf",
+          "subjects": ["remanejamento", "jornada"]
+        },
+        {
+          "title": "Portaria nº 100, de 02 de fevereiro de 2025",
+          "link": "#",
+          "subjects": ["licenca", "aposentadoria"]
+        }
+      ],
+      "leis": [
+        {
+          "title": "Lei nº 1000, de 15 de janeiro de 2025",
+          "link": "#",
+          "subjects": ["concurso", "posse"]
+        }
+      ],
+      "resolucoes": [
+        {
+          "title": "Resolução nº 5, de 10 de abril de 2025",
+          "link": "#",
+          "subjects": ["jornada", "licenca"]
+        }
+      ],
+      "outros": [
+        {
+          "title": "Memorando-Circular nº 25, de 05 de março de 2025",
+          "link": "#",
+          "subjects": ["remanejamento", "outros"]
+        }
+      ]
+    };
+
+    // Função para renderizar as publicações com base nos filtros
+    function renderPublications() {
+      const selectedDocType = document.getElementById('document-filter').value;
+      const selectedSubject = document.getElementById('subject-filter').value;
+      const publicationsList = document.getElementById('publications-list');
+      publicationsList.innerHTML = '';
+
+      const docTypes = selectedDocType === 'all' ? Object.keys(publicationsData) : [selectedDocType];
+
+      docTypes.forEach(docType => {
+        const publications = publicationsData[docType];
+        if (!publications || publications.length === 0) {
+          return;
+        }
+
+        const filteredPublications = publications.filter(pub => {
+          return selectedSubject === 'all' || pub.subjects.includes(selectedSubject);
+        });
+
+        if (filteredPublications.length > 0) {
+          const sectionTitle = docType.charAt(0).toUpperCase() + docType.slice(1);
+          const sectionHTML = `
+            <div class="document-section ${docType}">
+              <h2>${sectionTitle}</h2>
+              <ul>
+                ${filteredPublications.map(pub => `
+                  <li class="${pub.subjects.join(' ')}">
+                    <a href="${pub.link}" target="_blank">${pub.title}</a>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          `;
+          publicationsList.innerHTML += sectionHTML;
         }
       });
+      
+      if (publicationsList.innerHTML === '') {
+          publicationsList.innerHTML = '<p class="no-results-message">Nenhuma publicação encontrada com esses filtros.</p>';
+      }
     }
 
-    // Chama a função ao carregar a página
-    window.onload = applyFilters;
+    // Função para aplicar os filtros
+    function applyFilters() {
+      renderPublications();
+    }
+
+    // Renderiza as publicações ao carregar a página
+    window.onload = renderPublications;
   </script>
 </body>
 </html>
