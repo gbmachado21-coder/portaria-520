@@ -136,6 +136,8 @@ footer {
     padding: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
+    width: fit-content;
+    margin: 20px auto;
 }
 
 .botao {
@@ -360,4 +362,3 @@ botoes-container {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-
