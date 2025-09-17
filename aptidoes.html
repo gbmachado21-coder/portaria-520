@@ -7,252 +7,89 @@
     <title>Aptidões - DISET</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para a página de Aptidões */
-        .tab-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
+        .anchor-menu {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
             border-radius: 8px;
-            overflow: hidden;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .tab-header {
-            display: flex;
-            justify-content: space-around;
-            background-color: #002d62;
+
+        .anchor-menu h2 {
+            margin: 0 0 10px 0;
         }
-        .tab-button {
-            padding: 15px 25px;
+
+        .anchor-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .anchor-menu li a {
+            display: block;
+            padding: 8px 12px;
             text-decoration: none;
-            color: white;
-            font-weight: bold;
-            flex-grow: 1;
-            text-align: center;
-            cursor: pointer;
+            color: #0066cc;
+            background-color: #e6f7ff;
+            border: 1px solid #cceeff;
+            border-radius: 5px;
+            margin-bottom: 5px;
             transition: background-color 0.3s ease;
         }
-        .tab-button:hover {
-            background-color: #004d80;
+
+        .anchor-menu li a:hover {
+            background-color: #cceeff;
         }
-        .tab-button.active {
-            background-color: #007bff;
+
+        .content-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
         }
-        .tab-content {
-            padding: 20px;
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
+
+        .content-section h2 {
             color: #333;
         }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        ul {
-            list-style-type: disc;
-            margin: 0;
-            padding-left: 20px;
+
+        .content-section h3 {
+            color: #555;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="logo gdf.png" alt="Logo GDF">
-        <h1>Painel de Informações - DISET</h1>
+        <img src="logo gdf.png" alt="Logo da Secretaria de Estado de Educação do Distrito Federal">
+        <h1>Aptidões</h1>
     </header>
     <main class="main-content">
-        <h2>Aptidões 2025</h2>
-        
-        <div class="tab-container">
-            <div class="tab-header">
-                <a class="tab-button active" onclick="openTab(event, 'subin')">SUBIN</a>
-                <a class="tab-button" onclick="openTab(event, 'subeb')">SUBEB</a>
-            </div>
+        <p>
+            Acesse as orientações sobre as aptidões disponíveis.
+        </p>
 
-            <div id="subin" class="tab-content active">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Grupo</th>
-                            <th>Aptidão</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Ensino Médio em Tempo Integral (EMTI)</td>
-                            <td>
-                                <ul>
-                                    <li>Práticas Visuais (Desenho, escultura, intervenção urbana, pintura e tridimensionalidade)</li>
-                                    <li>Audiovisual (Cinema, fotografia, rádio escolar e videoarte)</li>
-                                    <li>Corporeidades (Meditação, pilates e yoga)</li>
-                                    <li>Dança (Danças contemporâneas, populares e modernas)</li>
-                                    <li>Inovação e Tecnologia (Ciência internética, cultura digital, cultura maker, inteligência artificial, jogos digitais, laboratório de inovação, STEAM, empreendedorismo e startup)</li>
-                                    <li>Música (Bateria, canto, coral, flauta, musicalização, teclado, teoria musical, orquestra, percussão, piano, prática em conjunto, violão e violino)</li>
-                                    <li>Promoção da Saúde (Cultura alimentar e bem-estar, primeiros socorros e educação sexual)</li>
-                                    <li>Robótica</li>
-                                    <li>Teatro (Performance, teatro de bonecos, teatro de rua, teatro de sombra, maquiagem teatral, musical e teatro urbano)</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Centro Interescolar de Línguas (CIL)</td>
-                            <td>LEM/FRANCES - CIL</td>
-                        </tr>
-                        <tr>
-                            <td>Programa Educação Bilíngue Intercultural (PEBI)</td>
-                            <td>
-                                <ul>
-                                    <li>Língua Portuguesa - PEBI</li>
-                                    <li>Língua Inglesa - PEBI</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Educação Ambiental</td>
-                            <td>Programa Educação Ambiental</td>
-                        </tr>
-                        <tr>
-                            <td>Escola Meninos e Meninas do Parque (EMMP)</td>
-                            <td>Escola dos Meninos e Meninas do Parque - EMMP</td>
-                        </tr>
-                        <tr>
-                            <td>Escola do Parque da Cidade (EPC PROEM)</td>
-                            <td>Escola do Parque da Cidade PROEM</td>
-                        </tr>
-                        <tr>
-                            <td>Português como Língua de Acolhimento (PLAC)</td>
-                            <td>Português como Língua de Acolhimento (PLAc)</td>
-                        </tr>
-                        <tr>
-                            <td>Serviço Especializado de Apoio à Aprendizagem (SEAA)</td>
-                            <td>
-                                <ul>
-                                    <li>Equipe Especializada de Apoio à Aprendizagem (EEAA)</li>
-                                    <li>Equipe Especializada de Apoio à Aprendizagem (Pedagogo)</li>
-                                    <li>Sala de Apoio à Aprendizagem (SAA)</li>
-                                    <li>Itinerância - Sala de Apoio à Aprendizagem (SAA)</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Educação Especial</td>
-                            <td>
-                                <ul>
-                                    <li>Classe Especial/Centro de Ensino Especial/Transtorno do Espectro Autista</li>
-                                    <li>Atividades / DI</li>
-                                    <li>Classe Especial/Centro de Ensino Especial/Deficiência Múltipla</li>
-                                    <li>Educação Precoce-Atividades</li>
-                                    <li>Classe Especial/Centro de Ensino Especial/Deficiência Intelectual</li>
-                                    <li>Atividades / Educação Precoce</li>
-                                    <li>Atividades / TGD</li>
-                                    <li>Classe Especial/Centro de Ensino Especial</li>
-                                    <li>Atividades / DMU</li>
-                                    <li>Atividades / TGD-TEA</li>
-                                    <li>Classe Bilíngue Mediada - Intérprete Libras</li>
-                                    <li>Classe Bilíngue</li>
-                                    <li>Sala de Recursos Generalista (SRG)</li>
-                                    <li>Centro de Ensino Especial (Área Específica)</li>
-                                    <li>Sala de Recursos Generalista/Ciências da Natureza ou Matemática</li>
-                                    <li>Sala de Recursos Generalista/Ciências Humanas ou Linguagem</li>
-                                    <li>Surdez e Deficiência Auditiva (S/DA)</li>
-                                    <li>Deficiência Visual</li>
-                                    <li>Altas Habilidades/Superdotação</li>
-                                    <li>Classes Especiais (CE) e Centro de Ensino Especial (CEE)</li>
-                                    <li>Programa de Educação Precoce (PEP)</li>
-                                    <li>Serviço de Orientação para o Trabalho na EJA (SOT na EJA)</li>
-                                    <li>Educação de Jovens e Adultos Interventiva - EJA Interventiva</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <nav class="anchor-menu">
+            <h2>Menu de Aptidões</h2>
+            <ul>
+                <li><a href="#emti">Ensino Médio em Tempo Integral (EMTI) - Itinerário Formativo Integrador</a></li>
+                </ul>
+        </nav>
 
-            <div id="subeb" class="tab-content">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Grupo</th>
-                            <th>Aptidão</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Educação Desportiva e Qualidade de Vida</td>
-                            <td>
-                                <ul>
-                                    <li>PECM</li>
-                                    <li>Atletismo</li>
-                                    <li>Jogos Recreativos</li>
-                                    <li>Futsal</li>
-                                    <li>Voleibol</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Núcleo de Ensino das Unidades Socioeducativas de Internação</td>
-                            <td>Núcleos de Ensino das Unidades Socioeducativas de Internação</td>
-                        </tr>
-                        <tr>
-                            <td>Projeto de Vida</td>
-                            <td>Projeto de Vida</td>
-                        </tr>
-                        <tr>
-                            <td>Educação Profissional e Tecnológica</td>
-                            <td>Educação Profissional e suas Tecnologias</td>
-                        </tr>
-                        <tr>
-                            <td>Atendimento Educacional Hospitalar - Classes Hospitalares</td>
-                            <td>Atendimento Educacional Hospitalar - Classes Hospitalares</td>
-                        </tr>
-                        <tr>
-                            <td>Educação Especial - Atendimento Educacional Hospitalar</td>
-                            <td>Educação Especial - Atendimento Educacional Hospitalar</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="content-section" id="emti">
+            <h2>Ensino Médio em Tempo Integral (EMTI) - Itinerário Formativo Integrador</h2>
+            
+            <h3>Objetivos do EMTI</h3>
+            <p>
+                <br><br>
+            </p>
+
+            <h3>Organização do Itinerário Formativo Integrador (IFI)</h3>
+            <p>
+                <br><br>
+            </p>
         </div>
 
-        <a href="index.html" class="botao-voltar">Voltar para o Início</a>
-    </main>
+        </main>
     <footer>
         <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
     </footer>
-
-    <script>
-        function openTab(evt, subsecretaria) {
-            var i, tabcontent, tabbuttons;
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tabbuttons = document.getElementsByClassName("tab-button");
-            for (i = 0; i < tabbuttons.length; i++) {
-                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
-            }
-            document.getElementById(subsecretaria).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-        
-        // Ativar a primeira aba por padrão ao carregar a página
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelector(".tab-button").click();
-        });
-    </script>
 </body>
 </html>
