@@ -17,7 +17,8 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 30px 20px;
+    /* CORREÇÃO AQUI: Reduz o padding inferior para eliminar o espaço extra abaixo do card */
+    padding: 30px 20px 0 20px;
 }
 
 /* --- 2. CABEÇALHO E RODAPÉ --- */
@@ -49,11 +50,11 @@ footer {
     padding: 15px 0;
     border-top: 1px solid #ddd;
     font-size: 0.85em;
+    margin-top: auto; /* Empurra o rodapé para o fim do viewport */
 }
 
 /* --- 3. ESTILO DO CARD CENTRALIZADO E INTRODUÇÃO --- */
 .intro-card, .card {
-    /* Aumenta a largura máxima para dar mais espaço e alívio visual */
     max-width: 900px; 
     width: 100%;
     
@@ -97,7 +98,7 @@ footer {
 }
 
 .botao-cancelar {
-    background-color: #dc3545; /* Vermelho para cancelar/excluir */
+    background-color: #dc3545; 
     margin-left: 10px;
     display: inline-block; 
 }
@@ -106,11 +107,11 @@ footer {
     background-color: #c82333;
 }
 
-/* CORREÇÃO CRÍTICA: HUB PRINCIPAL (index.html) - Usa Flexbox para alinhamento horizontal */
+/* HUB PRINCIPAL (index.html) - Flexbox para alinhamento horizontal */
 .botoes-hub {
     display: flex; 
-    flex-wrap: wrap; /* Permite que os botões quebrem em telas menores */
-    justify-content: space-between; /* Espalha os botões horizontalmente */
+    flex-wrap: wrap; 
+    justify-content: space-between; 
     align-items: center;
     gap: 15px; 
     margin-top: 20px;
@@ -118,7 +119,7 @@ footer {
 }
 
 .botoes-hub .botao {
-    /* Força 5 botões na linha em telas grandes (18% * 5 = 90% + gaps) */
+    /* Força 5 botões na linha em telas grandes */
     flex-basis: 18%; 
     max-width: 18%;
     padding: 15px 10px;
@@ -127,7 +128,6 @@ footer {
 /* GRIDE DE BOTÕES DA PÁGINA REMANEJAMENTO (remane.html) */
 .botoes-remane {
     display: grid;
-    /* 2 colunas fixas como na imagem */
     grid-template-columns: 1fr 1fr; 
     gap: 20px;
     max-width: 650px; 
@@ -135,7 +135,7 @@ footer {
     padding: 20px 0;
 }
 
-/* --- 5. ESTILOS PARA GESTÃO E PUBLICAÇÕES (CRUD E LISTA) --- */
+/* --- 5. ESTILOS PARA GESTÃO E PUBLICAÇÕES (CRUD E LISTA) --- (MANTIDO) */
 
 .card {
     margin-bottom: 30px;
