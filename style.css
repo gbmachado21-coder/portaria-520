@@ -299,3 +299,33 @@ footer {
 .back-button:hover {
   background-color: #5a6268;
 }
+
+/* --- NOVO ESTILO: HUB PRINCIPAL (index.html) --- */
+.botoes-hub {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    gap: 15px; 
+    width: 100%; 
+    margin-top: 20px;
+}
+
+/* Redefine a largura dos botões para caberem 5 por linha */
+.botoes-hub .botao {
+    flex-basis: 18%; 
+    min-width: 0; 
+    padding: 15px 10px; 
+    font-size: 0.9em; 
+}
+
+/* Ajuste para mobile: botões empilhados */
+@media (max-width: 600px) {
+    .botoes-hub {
+        flex-direction: column;
+    }
+    .botoes-hub .botao {
+        flex-basis: 100%; 
+        width: 100%;
+        font-size: 1em;
+    }
+}
