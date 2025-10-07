@@ -1,35 +1,109 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Início - DISET/SUGEP</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <img src="logo gdf.png" alt="Logo GDF">
-        <h1>Diretoria de Gestão dos Servidores - DISET/SUGEP</h1>
-    </header>
-    
-    <main class="main-content">
-        <div class="intro-card">
-            <p class="intro-text">
-                A Diretoria de Gestão dos Servidores Efetivos e Temporários –DISET (DISET/SUGEP) disponibiliza um painel interativo com dados atualizados sobre os profissionais da Secretaria de Estado de Educação do Distrito Federal. Este painel visa ampliar a transparência, apoiar a tomada de decisões e subsidiar a formulação de políticas públicas voltadas à gestão de pessoas.
-            </p>
+/* --- ESTILOS GERAIS DE LAYOUT --- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Fundo cinza claro */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+}
 
-            <div class="botoes-grid">
-                <a href="painel_bi.html" class="botao">Acessar Painel Power BI</a>
-                <a href="remane.html" class="botao">Remanejamento</a>
-                <a href="publica.html" class="botao">Publicações</a>
-                <a href="contatos.html" class="botao">Conheça a DISET</a>
-                <a href="aptidoes.html" class="botao full-width">Aptidões</a>
-            </div>
-        </div>
-    </main>
-    
-    <footer>
-        <p>© <time datetime="2025">2025</time> - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
-    </footer>
-</body>
-</html>
+header {
+    width: 100%;
+    background-color: #002d5c; /* Azul escuro do GDF */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header img {
+    max-height: 50px;
+    margin-bottom: 10px;
+}
+
+/* Garante que o conteúdo principal ocupe o espaço e se alinhe */
+.main-content {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+}
+
+/* --- ESTILO DO CARD PRINCIPAL (Fundo branco/cinza claro da imagem) --- */
+.intro-card {
+    max-width: 800px; 
+    width: 100%;
+    background-color: #ffffff; 
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.intro-text {
+    text-align: justify;
+    margin-bottom: 30px;
+    font-size: 1em;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* --- ESTILO DOS BOTÕES (Garante o visual azul vibrante) --- */
+.botao {
+    display: block;
+    padding: 15px 20px;
+    background-color: #007bff; /* Azul vibrante */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    /* Remove a borda azul clara na imagem */
+    border: none; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+.botao:hover {
+    background-color: #0056b3; 
+}
+
+/* --- ALINHAMENTO DE GRADE PARA BOTÕES --- */
+
+/* 1. Estilo para a página principal (Hub Principal - 5 botões) */
+.botoes-hub {
+    display: grid;
+    /* 5 colunas igualmente distribuídas no desktop */
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 10px;
+}
+
+/* 2. Estilo para a página Remanejamento (Portaria 520 - 6 botões) */
+.botoes-remane {
+    display: grid;
+    /* 2 colunas igualmente distribuídas no desktop */
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px;
+    max-width: 650px; /* Limita a largura para melhor alinhamento centralizado */
+    margin: 0 auto; /* Centraliza a grade na página */
+}
+
+/* Responsividade: Em telas menores, os botões voltam para coluna única */
+@media (max-width: 850px) {
+    .botoes-hub {
+        grid-template-columns: 1fr 1fr; /* 2 colunas para o hub */
+        justify-content: center;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+@media (max-width: 600px) {
+    .botoes-hub, .botoes-remane {
+        grid-template-columns: 1fr; /* Volta para uma coluna em telas muito pequenas */
+    }
+}
