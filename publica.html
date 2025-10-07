@@ -12,7 +12,7 @@
 <body>
   
   <header>
-    <img src="logo gdf.png" alt="Logo GDF">
+    <img src="logo_gdf.png" alt="Logo GDF">
     <h1>Publicações - DISET</h1>
   </header>
   
@@ -30,74 +30,57 @@
               <option value="portarias">Portarias</option>
               <option value="leis">Leis</option>
               <option value="resolucoes">Resoluções</option>
-              <option value="outros">Outros Documentos</option>
-            </select>
-            
-            <label for="subject-filter">Filtrar por assunto:</label>
+              </select>
+
+            <label for="subject-filter">Filtrar por Assunto:</label>
             <select id="subject-filter" onchange="applyFilters()">
-              <option value="all">Todos</option>
-              <option value="remanejamento">Remanejamento</option>
-              <option value="modulacao">Modulação</option>
-              <option value="provimento">Provimento</option>
-              <option value="licenca">Licença</option>
-              <option value="jornada">Jornada de Trabalho</option>
-              <option value="posse">Posse/Exercício</option>
-              <option value="aposentadoria">Aposentadoria</option>
-              <option value="concurso">Concurso Público</option>
-              <option value="outros">Outros Assuntos</option>
-            </select>
+                <option value="all">Todos</option>
+                <option value="remanejamento">Remanejamento</option>
+                <option value="lotacao">Lotação</option>
+                <option value="readaptacao">Readaptação</option>
+                </select>
         </fieldset>
       </div>
-
+      
       <div id="publications-list">
         </div>
+
     </div>
   </main>
 
   <footer>
-    <p>© <time datetime="2025">2025</time> - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
+    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
-
+  
   <script>
-    // Função auxiliar para capitalizar a primeira letra (melhora a renderização)
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+    // A simulação das publicações (se init_data.js não for carregado)
+    let publicationsData = window.publicationsData || {
+      portarias: [
+        { title: "Portaria Nº 520, de 08/05/2025 (Normas de Remanejamento)", link: "Portaria_520.pdf", originalSubject: "remanejamento" },
+        // Adicione mais exemplos aqui
+      ],
+      leis: [
+        { title: "Lei Complementar nº 840, de 23/12/2011", link: "#", originalSubject: "lotacao" },
+        // Adicione mais exemplos aqui
+      ],
+      resolucoes: []
+    };
     
-    // Função para buscar as publicações no localStorage e agrupá-las por tipo
-    function getPublicationsFromStorage() {
-      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-      const docTypes = ["portarias", "leis", "resolucoes", "outros"];
-      
-      const groupedData = docTypes.reduce((acc, type) => {
-          acc[type] = [];
-          return acc;
-      }, {});
-
-      publications.forEach(pub => {
-        if (docTypes.includes(pub.type)) {
-          groupedData[pub.type].push({
-            title: pub.name,
-            link: pub.fileName ? '#' : '#', 
-            // Armazena o assunto original para que a filtragem funcione
-            originalSubject: pub.subject 
-          });
-        }
-      });
-      return groupedData;
+    // Função utilitária para capitalizar a primeira letra
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    // Função para renderizar as publicações com base nos filtros
+    // Função para renderizar as publicações na lista
     function renderPublications() {
-      const selectedDocType = document.getElementById('document-filter').value;
-      const selectedSubject = document.getElementById('subject-filter').value;
       const publicationsList = document.getElementById('publications-list');
       publicationsList.innerHTML = '';
       
-      const publicationsData = getPublicationsFromStorage();
+      const selectedDocType = document.getElementById('document-filter').value;
+      const selectedSubject = document.getElementById('subject-filter').value;
 
       const docTypes = selectedDocType === 'all' ? Object.keys(publicationsData) : [selectedDocType];
-
+      
       docTypes.forEach(docType => {
         const publications = publicationsData[docType];
         if (!publications || publications.length === 0) {
@@ -105,7 +88,7 @@
         }
 
         const filteredPublications = publications.filter(pub => {
-          // A filtragem agora usa o 'originalSubject' e compara diretamente com o valor do select
+          // A filtragem usa o 'originalSubject' e compara diretamente com o valor do select
           return selectedSubject === 'all' || pub.originalSubject === selectedSubject;
         });
 
