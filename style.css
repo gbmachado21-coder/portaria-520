@@ -36,7 +36,7 @@ header h1 {
   background-color: #dcdcdc;
   max-width: 1200px;
   margin: 30px auto;
-  padding: 10px;
+  padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -396,5 +396,6 @@ details[open] summary::before {
         width: 100%;
     }
 }
+
 
 
