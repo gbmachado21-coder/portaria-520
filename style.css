@@ -137,7 +137,6 @@ footer {
 }
 
 /* --- 5. ESTILOS PARA GESTÃO E PUBLICAÇÕES (CRUD E LISTA) --- */
-/* (Estilos para formulários, listas e botões de ação - mantidos) */
 
 .card {
     margin-bottom: 30px;
@@ -170,6 +169,7 @@ footer {
     justify-content: flex-start;
 }
 
+/* LISTAS DE PUBLICAÇÕES (GESTÃO E VISUALIZAÇÃO) */
 #publications-list {
     list-style: none;
     padding: 0;
@@ -212,6 +212,7 @@ footer {
     background-color: #c82333;
 }
 
+/* CONTAINER DE FILTROS (PÁGINA publica.html) */
 .filter-container {
     background-color: #f7f7f7;
     padding: 15px;
@@ -242,6 +243,7 @@ footer {
     background-color: #5a6268;
 }
 
+/* SEÇÕES DE DOCUMENTOS (PÁGINA publica.html) */
 .document-section {
     margin-top: 20px;
     padding: 15px;
@@ -270,6 +272,7 @@ footer {
     text-decoration: underline;
 }
 
+/* MENSAGENS DE FEEDBACK */
 .message-box {
     padding: 10px;
     margin-top: 15px;
