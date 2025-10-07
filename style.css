@@ -17,7 +17,7 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    /* CORREÇÃO AQUI: Reduz o padding inferior para eliminar o espaço extra abaixo do card */
+    /* Ajuste para eliminar o espaço extra abaixo do card em telas grandes */
     padding: 30px 20px 0 20px;
 }
 
@@ -55,6 +55,7 @@ footer {
 
 /* --- 3. ESTILO DO CARD CENTRALIZADO E INTRODUÇÃO --- */
 .intro-card, .card {
+    /* Largura máxima para dar espaço, baseado na imagem */
     max-width: 900px; 
     width: 100%;
     
@@ -107,25 +108,25 @@ footer {
     background-color: #c82333;
 }
 
-/* HUB PRINCIPAL (index.html) - Flexbox para alinhamento horizontal */
+/* HUB PRINCIPAL (index.html) - Flexbox para alinhamento horizontal (CORREÇÃO FINAL) */
 .botoes-hub {
     display: flex; 
     flex-wrap: wrap; 
-    justify-content: space-between; 
+    justify-content: space-between; /* Espalha os botões uniformemente */
     align-items: center;
-    gap: 15px; 
+    gap: 15px; /* Espaço entre os botões */
     margin-top: 20px;
     padding: 0;
 }
 
 .botoes-hub .botao {
-    /* Força 5 botões na linha em telas grandes */
-    flex-basis: 18%; 
-    max-width: 18%;
+    /* Força 5 botões na linha em telas grandes (19% * 5 = 95% + gaps) */
+    flex-basis: 19%; 
+    max-width: 19%;
     padding: 15px 10px;
 }
 
-/* GRIDE DE BOTÕES DA PÁGINA REMANEJAMENTO (remane.html) */
+/* GRIDE DE BOTÕES DA PÁGINA REMANEJAMENTO (remane.html) - Usa Grid, pois são 2 colunas fixas */
 .botoes-remane {
     display: grid;
     grid-template-columns: 1fr 1fr; 
@@ -135,7 +136,7 @@ footer {
     padding: 20px 0;
 }
 
-/* --- 5. ESTILOS PARA GESTÃO E PUBLICAÇÕES (CRUD E LISTA) --- (MANTIDO) */
+/* --- 5. ESTILOS PARA GESTÃO E PUBLICAÇÕES (CRUD E LISTA) --- */
 
 .card {
     margin-bottom: 30px;
@@ -302,27 +303,29 @@ footer {
 
 /* --- 6. RESPONSIVIDADE --- */
 
-/* Ajusta o hub principal (index.html) para telas intermediárias */
+/* Transição de 5 para 3 colunas */
 @media (max-width: 1100px) {
      .botoes-hub .botao {
-        /* Muda para 3 colunas */
-        flex-basis: 31%; 
-        max-width: 31%;
+        /* Define 3 colunas (32% * 3 = 96% + gaps) */
+        flex-basis: 32%; 
+        max-width: 32%;
     }
 }
 
+/* Transição de 3 para 2 colunas */
 @media (max-width: 850px) {
     /* Hub principal (index.html) vira 2 colunas */
     .botoes-hub .botao {
-        flex-basis: 47%; 
-        max-width: 47%;
+        /* Define 2 colunas (48% * 2 = 96% + gaps) */
+        flex-basis: 48%; 
+        max-width: 48%;
     }
-    /* Página de Remanejamento (remane.html) ainda usa 2 colunas, mas limita o espaço */
     .botoes-remane {
         max-width: 90%;
     }
 }
 
+/* Transição para 1 coluna (Mobile) */
 @media (max-width: 600px) {
     .intro-card, .card {
         padding: 20px;
