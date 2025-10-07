@@ -53,11 +53,10 @@ footer {
 
 /* --- 3. ESTILO DO CARD CENTRALIZADO E INTRODUÇÃO --- */
 .intro-card, .card {
-    /* Aumenta a largura máxima para dar mais espaço, aliviando o texto apertado */
+    /* Aumenta a largura máxima para dar mais espaço e alívio visual */
     max-width: 900px; 
     width: 100%;
     
-    /* Estilo do fundo e bordas do card */
     background-color: #ffffff; 
     padding: 40px;
     border-radius: 10px;
@@ -68,7 +67,7 @@ footer {
 .intro-text {
     text-align: justify;
     margin: 0 auto 30px auto; 
-    max-width: 95%; /* Garante um pequeno respiro nas laterais do texto */
+    max-width: 95%; 
     font-size: 1.05em; 
     line-height: 1.6;
     color: #333;
@@ -107,14 +106,22 @@ footer {
     background-color: #c82333;
 }
 
-/* GRIDE DE BOTÕES DA PÁGINA INICIAL (index.html) - HUB PRINCIPAL */
+/* CORREÇÃO CRÍTICA: HUB PRINCIPAL (index.html) - Usa Flexbox para alinhamento horizontal */
 .botoes-hub {
-    display: grid;
-    /* Usa 5 colunas em telas muito largas para espalhar bem os botões */
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 10px;
+    display: flex; 
+    flex-wrap: wrap; /* Permite que os botões quebrem em telas menores */
+    justify-content: space-between; /* Espalha os botões horizontalmente */
+    align-items: center;
+    gap: 15px; 
     margin-top: 20px;
     padding: 0;
+}
+
+.botoes-hub .botao {
+    /* Força 5 botões na linha em telas grandes (18% * 5 = 90% + gaps) */
+    flex-basis: 18%; 
+    max-width: 18%;
+    padding: 15px 10px;
 }
 
 /* GRIDE DE BOTÕES DA PÁGINA REMANEJAMENTO (remane.html) */
@@ -264,7 +271,6 @@ footer {
     text-decoration: underline;
 }
 
-
 /* MENSAGENS DE FEEDBACK */
 .message-box {
     padding: 10px;
@@ -296,17 +302,24 @@ footer {
 
 /* --- 6. RESPONSIVIDADE --- */
 
-/* Ajusta o hub principal para telas médias */
+/* Ajusta o hub principal (index.html) para telas intermediárias */
 @media (max-width: 1100px) {
-     .botoes-hub {
-        grid-template-columns: repeat(3, 1fr); 
+     .botoes-hub .botao {
+        /* Muda para 3 colunas */
+        flex-basis: 31%; 
+        max-width: 31%;
     }
 }
 
 @media (max-width: 850px) {
     /* Hub principal (index.html) vira 2 colunas */
-    .botoes-hub {
-        grid-template-columns: repeat(2, 1fr); 
+    .botoes-hub .botao {
+        flex-basis: 47%; 
+        max-width: 47%;
+    }
+    /* Página de Remanejamento (remane.html) ainda usa 2 colunas, mas limita o espaço */
+    .botoes-remane {
+        max-width: 90%;
     }
 }
 
@@ -315,9 +328,15 @@ footer {
         padding: 20px;
     }
     
-    /* Todas as grades de botões viram 1 coluna */
+    /* Todas as grades de botões viram 1 coluna (100% da largura) */
     .botoes-hub, .botoes-remane {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .botoes-hub .botao, .botoes-remane .botao {
+        flex-basis: 100%; 
+        max-width: 100%;
     }
     
     /* Filtros (publica.html) */
