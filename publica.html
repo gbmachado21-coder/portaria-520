@@ -1,126 +1,147 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Publicações - DISET</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicações - DISET</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <script src="init_data.js"></script> 
 </head>
 <body>
-  <header>
-    <img src="logo gdf.png" alt="Logo GDF">
-    <h1>Publicações - DISET</h1>
-  </header>
-  <main class="main-content">
-    <div class="container">
-      <div class="filter-container">
-        <a class="botao-voltar" href="gestao.html">⬅Gerenciar Publicações</a> 
-        <label for="document-filter">Filtrar por tipo de documento:</label>
-        <select id="document-filter" onchange="applyFilters()">
-          <option value="all">Todos</option>
-          <option value="portarias">Portarias</option>
-          <option value="leis">Leis</option>
-          <option value="resolucoes">Resoluções</option>
-          <option value="outros">Outros Documentos</option>
-        </select>
-        <label for="subject-filter">Filtrar por assunto:</label>
-        <select id="subject-filter" onchange="applyFilters()">
-          <option value="all">Todos</option>
-          <option value="remanejamento">Remanejamento</option>
-          <option value="licenca">Licença</option>
-          <option value="jornada">Jornada de Trabalho</option>
-          <option value="posse">Posse/Exercício</option>
-          <option value="aposentadoria">Aposentadoria</option>
-          <option value="concurso">Concurso Público</option>
-          <option value="outros">Outros Assuntos</option>
-        </select>
-      </div>
+  
+  <header>
+    <img src="logo gdf.png" alt="Logo GDF">
+    <h1>Publicações - DISET</h1>
+  </header>
+  
+  <main class="main-content">
+    <div class="container">
+      <div class="filter-container">
+        <a class="botao-voltar" href="gestao.html" title="Acessar painel de gerenciamento">⬅Gerenciar Publicações</a> 
+        
+        <fieldset class="publication-filters">
+            <legend class="sr-only">Filtros de Publicação</legend>
+            
+            <label for="document-filter">Filtrar por tipo de documento:</label>
+            <select id="document-filter" onchange="applyFilters()">
+              <option value="all">Todos</option>
+              <option value="portarias">Portarias</option>
+              <option value="leis">Leis</option>
+              <option value="resolucoes">Resoluções</option>
+              <option value="outros">Outros Documentos</option>
+            </select>
+            
+            <label for="subject-filter">Filtrar por assunto:</label>
+            <select id="subject-filter" onchange="applyFilters()">
+              <option value="all">Todos</option>
+              <option value="remanejamento">Remanejamento</option>
+              <option value="modulacao">Modulação</option>
+              <option value="provimento">Provimento</option>
+              <option value="licenca">Licença</option>
+              <option value="jornada">Jornada de Trabalho</option>
+              <option value="posse">Posse/Exercício</option>
+              <option value="aposentadoria">Aposentadoria</option>
+              <option value="concurso">Concurso Público</option>
+              <option value="outros">Outros Assuntos</option>
+            </select>
+        </fieldset>
+      </div>
 
-      <div id="publications-list">
-        <!-- As publicações serão carregadas dinamicamente aqui -->
-      </div>
-    </div>
-  </main>
+      <div id="publications-list">
+        </div>
+    </div>
+  </main>
 
-  <footer>
-    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
-  </footer>
+  <footer>
+    <p>© <time datetime="2025">2025</time> - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
+  </footer>
 
-  <script>
-    // Função para buscar as publicações no localStorage e agrupá-las por tipo
-    function getPublicationsFromStorage() {
-      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-      const groupedData = {
-        "portarias": [],
-        "leis": [],
-        "resolucoes": [],
-        "outros": []
-      };
+  <script>
+    // Função auxiliar para capitalizar a primeira letra (melhora a renderização)
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
+    // Função para buscar as publicações no localStorage e agrupá-las por tipo
+    function getPublicationsFromStorage() {
+      const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+      const docTypes = ["portarias", "leis", "resolucoes", "outros"];
+      
+      const groupedData = docTypes.reduce((acc, type) => {
+          acc[type] = [];
+          return acc;
+      }, {});
 
-      publications.forEach(pub => {
-        if (groupedData[pub.type]) {
-          groupedData[pub.type].push({
-            title: pub.name,
-            link: pub.fileName ? '#' : '#', // Você pode ajustar o link se tiver o URL real do arquivo
-            subjects: [pub.subject]
-          });
-        }
-      });
-      return groupedData;
-    }
+      publications.forEach(pub => {
+        if (docTypes.includes(pub.type)) {
+          groupedData[pub.type].push({
+            title: pub.name,
+            link: pub.fileName ? '#' : '#', 
+            // Armazena o assunto original para que a filtragem funcione
+            originalSubject: pub.subject 
+          });
+        }
+      });
+      return groupedData;
+    }
 
-    // Função para renderizar as publicações com base nos filtros
-    function renderPublications() {
-      const selectedDocType = document.getElementById('document-filter').value;
-      const selectedSubject = document.getElementById('subject-filter').value;
-      const publicationsList = document.getElementById('publications-list');
-      publicationsList.innerHTML = '';
-      
-      const publicationsData = getPublicationsFromStorage();
+    // Função para renderizar as publicações com base nos filtros
+    function renderPublications() {
+      const selectedDocType = document.getElementById('document-filter').value;
+      const selectedSubject = document.getElementById('subject-filter').value;
+      const publicationsList = document.getElementById('publications-list');
+      publicationsList.innerHTML = '';
+      
+      const publicationsData = getPublicationsFromStorage();
 
-      const docTypes = selectedDocType === 'all' ? Object.keys(publicationsData) : [selectedDocType];
+      const docTypes = selectedDocType === 'all' ? Object.keys(publicationsData) : [selectedDocType];
 
-      docTypes.forEach(docType => {
-        const publications = publicationsData[docType];
-        if (!publications || publications.length === 0) {
-          return;
-        }
+      docTypes.forEach(docType => {
+        const publications = publicationsData[docType];
+        if (!publications || publications.length === 0) {
+          return;
+        }
 
-        const filteredPublications = publications.filter(pub => {
-          return selectedSubject === 'all' || pub.subjects.includes(selectedSubject);
-        });
+        const filteredPublications = publications.filter(pub => {
+          // A filtragem agora usa o 'originalSubject' e compara diretamente com o valor do select
+          return selectedSubject === 'all' || pub.originalSubject === selectedSubject;
+        });
 
-        if (filteredPublications.length > 0) {
-          const sectionTitle = docType.charAt(0).toUpperCase() + docType.slice(1);
-          const sectionHTML = `
-            <div class="document-section ${docType}">
-              <h2>${sectionTitle}</h2>
-              <ul>
-                ${filteredPublications.map(pub => `
-                  <li class="${pub.subjects.join(' ')}">
-                    <a href="${pub.link}" target="_blank">${pub.title}</a>
-                  </li>
-                `).join('')}
-              </ul>
-            </div>
-          `;
-          publicationsList.innerHTML += sectionHTML;
-        }
-      });
-      
-      if (publicationsList.innerHTML === '') {
-          publicationsList.innerHTML = '<p class="no-results-message">Nenhuma publicação encontrada com esses filtros.</p>';
-      }
-    }
+        if (filteredPublications.length > 0) {
+          const sectionTitle = capitalizeFirstLetter(docType);
+          
+          const listItems = filteredPublications.map(pub => `
+            <li class="${pub.originalSubject}">
+              <a href="${pub.link}" target="_blank" title="Abrir ${pub.title}">${pub.title}</a>
+            </li>
+          `).join('');
 
-    // Função para aplicar os filtros
-    function applyFilters() {
-      renderPublications();
-    }
+          const sectionHTML = `
+            <div class="document-section ${docType}">
+              <h2>${sectionTitle}</h2>
+              <ul>
+                ${listItems}
+              </ul>
+            </div>
+          `;
+          publicationsList.innerHTML += sectionHTML;
+        }
+      });
+      
+      if (publicationsList.innerHTML === '') {
+          publicationsList.innerHTML = '<p class="no-results-message">Nenhuma publicação encontrada com esses filtros.</p>';
+      }
+    }
 
-    // Renderiza as publicações ao carregar a página
-    window.onload = renderPublications;
-  </script>
+    // Função para aplicar os filtros
+    function applyFilters() {
+      renderPublications();
+    }
+
+    // Renderiza as publicações ao carregar a página
+    window.onload = renderPublications;
+  </script>
 </body>
 </html>
