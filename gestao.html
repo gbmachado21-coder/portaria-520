@@ -6,12 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestão de Publicações - DISET</title>
   <link rel="stylesheet" href="style.css">
+  
+  <script src="init_data.js"></script>
 </head>
 <body>
   <header>
     <img src="logo gdf.png" alt="Logo GDF">
     <h1>Gestão de Publicações</h1>
   </header>
+  
   <main class="main-content">
     <div class="card">
       <h2 id="form-title">Cadastrar Nova Publicação</h2>
@@ -53,16 +56,16 @@
     <div class="card publications-list-container">
       <h2>Publicações Cadastradas</h2>
       <ul id="publications-list">
-        <!-- Publicações serão carregadas aqui -->
-      </ul>
+        </ul>
     </div>
   </main>
+  
   <footer>
-    <div class="back-button-container">
+    <nav class="back-button-container" aria-label="Navegação de Retorno">
       <a href="index.html" class="back-button">Voltar para a página inicial</a>
       <a href="publica.html" class="back-button">Ver Publicações</a>
-    </div>
-    <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
+    </nav>
+    <p>© <time datetime="2025">2025</time> - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
 
   <script>
@@ -78,16 +81,17 @@
       const file = fileInput.files[0];
       const index = document.getElementById('pub-index').value;
       
+      let publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
+      
       const newPublication = {
         name: name,
         type: type,
         subject: subject,
-        fileName: file ? file.name : ''
+        // Mantém o nome do arquivo se estiver editando e nenhum novo arquivo for selecionado
+        fileName: file ? file.name : (index !== "-1" ? publications[index].fileName : '')
       };
 
       try {
-        let publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
-        
         if (index === "-1") {
           publications.push(newPublication);
           showMessage('Publicação salva com sucesso!', 'success');
@@ -113,13 +117,28 @@
       const messageBox = document.getElementById('message-box');
       messageBox.textContent = text;
       messageBox.style.display = 'block';
+      
+      messageBox.classList.remove('success', 'error', 'warning'); 
+
+      // Configuração de estilo CSS (deve ser definido em style.css para ser ideal)
       if (type === 'success') {
-        messageBox.style.backgroundColor = '#d4edda';
-        messageBox.style.color = '#155724';
-      } else {
-        messageBox.style.backgroundColor = '#f8d7da';
-        messageBox.style.color = '#721c24';
+        messageBox.classList.add('success');
+        messageBox.style.backgroundColor = '#d4edda'; // Verde claro
+        messageBox.style.color = '#155724'; // Texto verde escuro
+      } else if (type === 'error') {
+        messageBox.classList.add('error');
+        messageBox.style.backgroundColor = '#f8d7da'; // Vermelho claro
+        messageBox.style.color = '#721c24'; // Texto vermelho escuro
+      } else if (type === 'warning') {
+        messageBox.classList.add('warning');
+        messageBox.style.backgroundColor = '#fff3cd'; // Amarelo claro
+        messageBox.style.color = '#856404'; // Texto amarelo escuro
       }
+      
+      // Oculta a mensagem após 4 segundos
+      setTimeout(() => {
+        messageBox.style.display = 'none';
+      }, 4000);
     }
 
     function resetForm() {
@@ -135,13 +154,18 @@
       publicationsList.innerHTML = '';
       const publications = JSON.parse(localStorage.getItem('publicacoes')) || [];
 
+      if (publications.length === 0) {
+          publicationsList.innerHTML = '<li class="no-data-message">Nenhuma publicação cadastrada.</li>';
+          return;
+      }
+
       publications.forEach((pub, index) => {
         const listItem = document.createElement('li');
         listItem.innerHTML = `
-          <span>${pub.name} (${pub.type}, ${pub.subject}) - Arquivo: ${pub.fileName || 'Nenhum'}</span>
+          <span>${pub.name} (${pub.type.toUpperCase()}, ${pub.subject.toUpperCase()}) - Arquivo: ${pub.fileName || 'Nenhum'}</span>
           <div class="actions">
-            <button class="edit-button" data-index="${index}">Editar</button>
-            <button class="delete-button" data-index="${index}">Excluir</button>
+            <button class="edit-button" data-index="${index}" title="Editar ${pub.name}">Editar</button>
+            <button class="delete-button" data-index="${index}" title="Excluir ${pub.name}">Excluir</button>
           </div>
         `;
         publicationsList.appendChild(listItem);
@@ -151,7 +175,9 @@
       document.querySelectorAll('.delete-button').forEach(button => {
         button.addEventListener('click', function() {
           const index = this.getAttribute('data-index');
-          deletePublication(index);
+          if (confirm('Tem certeza que deseja excluir esta publicação? Esta ação é irreversível.')) {
+            deletePublication(index);
+          }
         });
       });
 
@@ -170,7 +196,8 @@
         publications.splice(index, 1);
         localStorage.setItem('publicacoes', JSON.stringify(publications));
         loadAndRenderPublications();
-        showMessage('Publicação excluída com sucesso!', 'success');
+        showMessage('Publicação excluída com sucesso!', 'error'); // Usando 'error' para feedback de exclusão
+        resetForm();
       }
     }
 
@@ -186,6 +213,8 @@
       document.getElementById('save-button').textContent = "Atualizar Publicação";
       document.getElementById('form-title').textContent = "Editar Publicação";
       document.getElementById('cancel-button').style.display = 'inline-block';
+      
+      showMessage('Você está editando. O campo Arquivo não será preenchido. Selecione um novo arquivo se quiser alterá-lo.', 'warning'); 
     }
   </script>
 </body>
