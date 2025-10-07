@@ -55,7 +55,7 @@ footer {
 
 /* --- 3. ESTILO DO CARD CENTRALIZADO E INTRODUÇÃO --- */
 .intro-card, .card {
-    /* Largura máxima para dar espaço, baseado na imagem */
+    /* Largura máxima ajustada para o alinhamento central */
     max-width: 900px; 
     width: 100%;
     
@@ -108,25 +108,25 @@ footer {
     background-color: #c82333;
 }
 
-/* HUB PRINCIPAL (index.html) - Flexbox para alinhamento horizontal (CORREÇÃO FINAL) */
+/* HUB PRINCIPAL (index.html) - Flexbox para alinhamento horizontal (5 COLUNAS) */
 .botoes-hub {
     display: flex; 
     flex-wrap: wrap; 
-    justify-content: space-between; /* Espalha os botões uniformemente */
+    justify-content: space-between; 
     align-items: center;
-    gap: 15px; /* Espaço entre os botões */
+    gap: 15px; 
     margin-top: 20px;
     padding: 0;
 }
 
 .botoes-hub .botao {
-    /* Força 5 botões na linha em telas grandes (19% * 5 = 95% + gaps) */
+    /* Força 5 botões na linha em telas grandes */
     flex-basis: 19%; 
     max-width: 19%;
     padding: 15px 10px;
 }
 
-/* GRIDE DE BOTÕES DA PÁGINA REMANEJAMENTO (remane.html) - Usa Grid, pois são 2 colunas fixas */
+/* GRIDE DE BOTÕES DA PÁGINA REMANEJAMENTO (remane.html) - Grid para 2 COLUNAS FIXAS */
 .botoes-remane {
     display: grid;
     grid-template-columns: 1fr 1fr; 
