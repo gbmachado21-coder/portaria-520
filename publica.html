@@ -6,125 +6,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Publicações - DISET</title>
   <link rel="stylesheet" href="style.css">
-  
-  <script src="init_data.js"></script> 
+  <script src="init_data.js"></script>
 </head>
 <body>
-  
   <header>
     <img src="logo_gdf.png" alt="Logo GDF">
     <h1>Publicações - DISET</h1>
   </header>
-  
+
   <main class="main-content">
     <div class="container">
       <div class="filter-container">
-        <a class="botao-voltar" href="gestao.html" title="Acessar painel de gerenciamento">⬅Gerenciar Publicações</a> 
-        
-        <fieldset class="publication-filters">
-            <legend class="sr-only">Filtros de Publicação</legend>
-            
-            <label for="document-filter">Filtrar por tipo de documento:</label>
-            <select id="document-filter" onchange="applyFilters()">
-              <option value="all">Todos</option>
-              <option value="portarias">Portarias</option>
-              <option value="leis">Leis</option>
-              <option value="resolucoes">Resoluções</option>
-              </select>
+        <a class="botao-voltar" href="gestao.html" title="Acessar painel de gerenciamento">⬅ Gerenciar Publicações</a>
 
-            <label for="subject-filter">Filtrar por Assunto:</label>
-            <select id="subject-filter" onchange="applyFilters()">
-                <option value="all">Todos</option>
-                <option value="remanejamento">Remanejamento</option>
-                <option value="lotacao">Lotação</option>
-                <option value="readaptacao">Readaptação</option>
-                </select>
+        <fieldset class="publication-filters">
+          <legend class="sr-only">Filtros de Publicação</legend>
+
+          <label for="document-filter">Filtrar por tipo de documento:</label>
+          <select id="document-filter" onchange="applyFilters()">
+            <option value="all">Todos</option>
+            <option value="portarias">Portarias</option>
+            <option value="leis">Leis</option>
+            <option value="resolucoes">Resoluções</option>
+          </select>
+
+          <label for="subject-filter">Filtrar por assunto:</label>
+          <select id="subject-filter" onchange="applyFilters()">
+            <option value="all">Todos</option>
+            <option value="remanejamento">Remanejamento</option>
+            <option value="lotacao">Lotação</option>
+            <option value="readaptacao">Readaptação</option>
+          </select>
         </fieldset>
       </div>
-      
-      <div id="publications-list">
-        </div>
 
+      <div id="publications-list"></div>
     </div>
   </main>
 
   <footer>
     <p>© 2025 - Secretaria de Estado de Educação do Distrito Federal (SEEDF) – DISET/SUGEP</p>
   </footer>
-  
+
   <script>
-    // A simulação das publicações (se init_data.js não for carregado)
     let publicationsData = window.publicationsData || {
       portarias: [
-        { title: "Portaria Nº 520, de 08/05/2025 (Normas de Remanejamento)", link: "Portaria_520.pdf", originalSubject: "remanejamento" },
-        // Adicione mais exemplos aqui
+        {
+          title: "Portaria Nº 520, de 08/05/2025 (Normas de Remanejamento)",
+          link: "Portaria_520.pdf",
+          originalSubject: "remanejamento"
+        }
       ],
       leis: [
-        { title: "Lei Complementar nº 840, de 23/12/2011", link: "#", originalSubject: "lotacao" },
-        // Adicione mais exemplos aqui
+        {
+          title: "Lei Complementar nº 840, de 23/12/2011",
+          link: "#",
+          originalSubject: "lotacao"
+        }
       ],
       resolucoes: []
     };
-    
-    // Função utilitária para capitalizar a primeira letra
+
     function capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    // Função para renderizar as publicações na lista
     function renderPublications() {
       const publicationsList = document.getElementById('publications-list');
       publicationsList.innerHTML = '';
-      
+
       const selectedDocType = document.getElementById('document-filter').value;
       const selectedSubject = document.getElementById('subject-filter').value;
 
-      const docTypes = selectedDocType === 'all' ? Object.keys(publicationsData) : [selectedDocType];
-      
+      const docTypes = selectedDocType === 'all'
+        ? Object.keys(publicationsData)
+        : [selectedDocType];
+
       docTypes.forEach(docType => {
         const publications = publicationsData[docType];
-        if (!publications || publications.length === 0) {
-          return;
-        }
+        if (!publications || publications.length === 0) return;
 
-        const filteredPublications = publications.filter(pub => {
-          // A filtragem usa o 'originalSubject' e compara diretamente com o valor do select
-          return selectedSubject === 'all' || pub.originalSubject === selectedSubject;
-        });
+        const filteredPublications = publications.filter(pub =>
+          selectedSubject === 'all' || pub.originalSubject === selectedSubject
+        );
 
         if (filteredPublications.length > 0) {
           const sectionTitle = capitalizeFirstLetter(docType);
-          
+
           const listItems = filteredPublications.map(pub => `
             <li class="${pub.originalSubject}">
               <a href="${pub.link}" target="_blank" title="Abrir ${pub.title}">${pub.title}</a>
             </li>
           `).join('');
 
-          const sectionHTML = `
+          publicationsList.innerHTML += `
             <div class="document-section ${docType}">
               <h2>${sectionTitle}</h2>
-              <ul>
-                ${listItems}
-              </ul>
+              <ul>${listItems}</ul>
             </div>
           `;
-          publicationsList.innerHTML += sectionHTML;
         }
       });
-      
+
       if (publicationsList.innerHTML === '') {
-          publicationsList.innerHTML = '<p class="no-results-message">Nenhuma publicação encontrada com esses filtros.</p>';
+        publicationsList.innerHTML = '<p class="no-results-message">Nenhuma publicação encontrada com esses filtros.</p>';
       }
     }
 
-    // Função para aplicar os filtros
     function applyFilters() {
       renderPublications();
     }
 
-    // Renderiza as publicações ao carregar a página
-    window.onload = renderPublications;
+    window.addEventListener('DOMContentLoaded', renderPublications);
   </script>
 </body>
 </html>
